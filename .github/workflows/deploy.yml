@@ -23,11 +23,11 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - name: Upload dist/ to public_html over FTP
+      - name: Upload dist/ to public_html (FTP root) over FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ./public_html/
+          server-dir: ./
