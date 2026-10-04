@@ -1,0 +1,134 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  width: 100%;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0 var(--gutter);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  transition: height 0.5s var(--ease), box-shadow 0.5s var(--ease), background 0.5s var(--ease);
+}
+.compact {
+  height: var(--header-h-compact);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 1px 0 var(--line), 0 12px 30px -20px rgba(7, 9, 13, 0.25);
+}
+
+.logo { display: inline-flex; align-items: center; flex-shrink: 0; }
+.logo img { transition: height 0.5s var(--ease); }
+
+.nav { display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 3.25rem); }
+.link {
+  position: relative;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  transition: color 0.3s;
+}
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0.2rem;
+  height: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease);
+}
+.link:hover::after { transform: scaleX(1); transform-origin: left; }
+.link:hover { color: var(--blue); }
+.active { color: var(--ink); }
+.indicator {
+  position: absolute;
+  left: 50%;
+  bottom: -0.35rem;
+  width: 6px; height: 6px;
+  margin-left: -3px;
+  background: var(--red);
+  rotate: 45deg;
+}
+
+.actions { display: flex; align-items: center; gap: 1rem; }
+
+.burger {
+  display: none;
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius);
+  background: var(--ink);
+}
+.burger span {
+  position: absolute;
+  left: 0.85rem;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+}
+.burger span:last-child { background: var(--red); }
+
+.progress {
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--blue) 0 82%, var(--red) 82% 100%);
+  transform-origin: left center;
+}
+
+/* ---------- mobile menu ---------- */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  padding: calc(var(--header-h) + 2.5rem) var(--gutter) 2rem;
+  background: var(--dark);
+  color: var(--on-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  overflow-y: auto;
+}
+.menuList { display: grid; gap: 0.25rem; }
+.menuLink {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  font-size: clamp(2.4rem, 11vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--on-dark);
+  border-bottom: 1px solid var(--line-dark);
+}
+.menuLink small {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--on-dark-muted);
+}
+.menuActive { color: #7c9bff; }
+.menuActive small { color: var(--red); }
+.menuFoot { display: grid; gap: 1.5rem; }
+.menuMeta { font-size: 0.9rem; color: var(--on-dark-muted); display: grid; gap: 0.35rem; }
+
+@media (max-width: 960px) {
+  .nav, .desktopCta { display: none !important; }
+  .burger { display: block; }
+}
+
+/* large displays: scale the logo with the rem system (inline px height is the base size) */
+@media (min-width: 2200px) {
+  .logo img { height: 3.1rem !important; }
+  .compact .logo img { height: 2.5rem !important; }
+}

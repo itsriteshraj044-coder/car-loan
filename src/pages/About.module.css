@@ -1,0 +1,140 @@
+/* ---------- who we are ---------- */
+.who {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(3rem, 7vw, 9rem);
+  align-items: center;
+}
+.whoCopy { display: grid; gap: 1.75rem; }
+.whoCopy p { max-width: 40rem; }
+.whoImg { aspect-ratio: 16 / 11; }
+
+/* ---------- roles ---------- */
+.roles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(3.5rem, 6vw, 6rem);
+  border: 1px solid var(--line-dark);
+}
+.role { padding: clamp(1.75rem, 3vw, 3rem); display: grid; gap: 1.5rem; align-content: start; }
+.role + .role { border-left: 1px solid var(--line-dark); }
+.roleHead { display: flex; align-items: center; gap: 0.9rem; }
+.roleHead h3 { font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem); letter-spacing: -0.03em; }
+.roleTag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line-dark);
+  color: var(--on-dark);
+}
+.roleTag.blue { background: var(--blue); border-color: var(--blue); }
+.roleList { display: grid; gap: 0.85rem; }
+.roleList li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.98rem; }
+.roleList svg { flex-shrink: 0; margin-top: 0.3rem; color: #7c9bff; }
+.role:last-child .roleList svg { color: var(--red); }
+
+/* ---------- why automotive finance matters ---------- */
+.matters {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(3rem, 7vw, 9rem);
+  align-items: center;
+}
+.mattersImg { aspect-ratio: 5 / 4; }
+.mattersCopy { display: grid; gap: 1.5rem; }
+.points { display: grid; gap: 0; margin-top: 1rem; border-top: 1px solid var(--line); }
+.points li {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.points span { font-family: var(--font-mono); font-size: 0.8rem; color: var(--blue); padding-top: 0.2rem; }
+.points strong { display: block; color: var(--ink); margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+
+/* ---------- mission / vision / values ---------- */
+.mvv {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 1.6vw, 1.75rem);
+  margin-top: clamp(3rem, 6vw, 5.5rem);
+}
+.mvvCard {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 3rem;
+  min-height: clamp(18rem, 26vw, 26rem);
+  padding: clamp(1.75rem, 2.6vw, 3rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
+}
+.mvvCard:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.mvvCard.featured { background: var(--blue); border-color: var(--blue); color: rgba(255, 255, 255, 0.85); }
+.mvvCard.featured h3 { color: #fff; }
+.mvvLabel {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+.mvvCard h3 { font-size: clamp(1.4rem, 1rem + 1.2vw, 2.25rem); letter-spacing: -0.035em; line-height: 1.12; margin-bottom: 1rem; }
+.mvvCard ul { display: grid; gap: 0.6rem; }
+.mvvCard li { display: flex; gap: 0.6rem; align-items: baseline; }
+.mvvCard li::before { content: ''; width: 0.5rem; height: 2px; background: var(--red); flex-shrink: 0; transform: translateY(-0.25rem); }
+
+/* ---------- audiences (full-bleed split) ---------- */
+.audiences {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+}
+.panel {
+  position: relative;
+  min-height: clamp(32rem, 80vh, 52rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  padding: clamp(2rem, 5vw, 5.5rem) var(--gutter);
+  color: rgba(255, 255, 255, 0.82);
+  overflow: hidden;
+  isolation: isolate;
+}
+.panelMedia { position: absolute; inset: 0; z-index: -2; transition: transform 1.4s var(--ease); }
+.panel:hover .panelMedia { transform: scale(1.05); }
+.panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(0deg, rgba(7, 9, 13, 0.94) 0%, rgba(7, 9, 13, 0.55) 50%, rgba(7, 9, 13, 0.2) 100%);
+}
+.panel h2 { color: #fff; font-size: clamp(2rem, 1.2rem + 2.6vw, 3.75rem); letter-spacing: -0.045em; max-width: 14ch; }
+.panel p { max-width: 34rem; }
+.panel ul { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.panel li {
+  font-size: 0.82rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+@media (max-width: 1024px) {
+  .mvv { grid-template-columns: 1fr; }
+  .mvvCard { min-height: 0; }
+}
+@media (max-width: 900px) {
+  .who, .matters { grid-template-columns: 1fr; }
+  .roles { grid-template-columns: 1fr; }
+  .role + .role { border-left: 0; border-top: 1px solid var(--line-dark); }
+  .audiences { grid-template-columns: 1fr; }
+  .panel { min-height: 30rem; }
+}
