@@ -33,7 +33,7 @@ Copy deliberately avoids approval, rate or "guaranteed" claims: CARZENX is prese
 
 All media is self-hosted in `public/`.
 
-- Hero video: "Car Driving at Night" by Erik Mclean, Pexels (free Pexels licence) — https://www.pexels.com/video/car-driving-at-night-13643105/. Re-encoded to `public/videos/carzenx-hero.mp4` (1920px) and `carzenx-hero-mobile.mp4` (960px, used ≤768px). Poster: `public/images/hero-poster.webp`. Swap the files to change the footage.
+- Hero video: original 8s seamless loop built with Remotion (project `E:\website\motion ai\carzenx-hero`, composition `CarzenxHero`, 1920×1080 @ 30fps). Encoded to `public/videos/carzenx-hero.mp4` (1920px) and `carzenx-hero-mobile.mp4` (960px, used ≤768px). Poster: `public/images/hero-poster.webp`. Swap the files to change the footage.
 - Photography: Pexels (free Pexels licence), converted to WebP at 800px and 1600px (`public/images/<name>-800.webp` / `-1600.webp`). Pexels IDs: 14667492, 3786092, 7144207, 12565887, 17081564, 4895440, 7144261, 8482859, 16176576, 213165, 9284184, 36729855, 19477337, 37426530, 5111946, 3876397.
 
 ## Structure

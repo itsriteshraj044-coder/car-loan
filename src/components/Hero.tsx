@@ -7,10 +7,10 @@ import CTAButton from './CTAButton'
 import styles from './Hero.module.css'
 
 /**
- * Hero footage: "Car Driving at Night" by Erik Mclean, Pexels (free to use, Pexels licence)
- * https://www.pexels.com/video/car-driving-at-night-13643105/
- * Re-encoded and self-hosted. Replace /public/videos/carzenx-hero.mp4 (desktop) and
- * carzenx-hero-mobile.mp4 (≤768px) to change it; the poster is /images/hero-poster.webp.
+ * Hero footage: original 8s seamless loop made in Remotion (source: E:\website\motion ai\carzenx-hero,
+ * composition "CarzenxHero") — a night road whose route lights run up into a network of lending partners.
+ * Replace /public/videos/carzenx-hero.mp4 (desktop) and carzenx-hero-mobile.mp4 (≤768px)
+ * to change it; the poster is /images/hero-poster.webp.
  */
 const VIDEO_DESKTOP = '/videos/carzenx-hero.mp4'
 const VIDEO_MOBILE = '/videos/carzenx-hero-mobile.mp4'
