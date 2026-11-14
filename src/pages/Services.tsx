@@ -53,12 +53,12 @@ const faqs = [
     a: 'No one other than the lender can decide that, and we never promise approvals or rates. What we can do is help you understand the options lenders present and make sure your application is complete and accurate.',
   },
   {
-    q: 'Do you assist with used car loans as well?',
-    a: 'Yes. Pre-owned vehicles usually need additional paperwork such as the RC, insurance and sometimes a valuation. We explain what lenders typically ask for and help you assemble it.',
+    q: 'Which loans do you help with?',
+    a: 'New car loans (tenure 5 to 7 years), used car loans (5 to 6 years), car refinance (up to 5 years) and BT top-up for cars up to 12 years old (up to 5 years) — along with the RTO work for each. Final tenure and terms are set by the lender.',
   },
   {
     q: 'I’m a dealer. How can we work with CARZENX?',
-    a: 'We can act as a finance distribution partner for your customers — helping them access suitable lending partners and supporting their documentation. Get in touch through the contact page and our team will follow up.',
+    a: 'We work pan-India with dealers, distributors and banks, and offer distributorship to partners. We can also act as a finance desk for your customers — helping them access suitable lending partners and supporting their documentation. Get in touch through the contact page and our team will follow up.',
   },
   {
     q: 'Will I pay the loan amount or EMIs to CARZENX?',
@@ -137,8 +137,8 @@ export default function Services() {
   return (
     <div ref={root}>
       <Seo
-        title="Car Loan Services | New & Used Car Finance Assistance — CARZENX"
-        description="New and used car loan assistance, finance guidance, application support, documentation help and dealer finance distribution from CARZENX, a car loan DSA distributor."
+        title="Car Loan Services | New, Used, Refinance & BT Top-up — CARZENX"
+        description="New car loans, used car loans, car refinance, BT top-up, Loan + RTO services and dealer distributorship from CARZENX, a pan-India car loan DSA distributor since 2017."
         path="/services"
       />
 
@@ -146,7 +146,7 @@ export default function Services() {
         crumb="Services"
         lines={['Car finance,', 'assisted end', 'to end.']}
         accent={{ assisted: 'text-red' }}
-        lead="From the first conversation to the lender’s decision, CARZENX supports car buyers and dealerships with guidance, applications and documentation — connecting you with suitable lending partners."
+        lead="New car, used car, refinance and BT top-up loans with partner banks such as Axis Bank and ICICI Bank — plus RTO work and distributorship for dealers. From the first conversation to the lender’s decision."
         image="sedan-front"
         imageAlt="Front view of a black luxury sedan parked on a city street"
         footLeft="Six services"

@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { CarFront, RefreshCcw, Landmark, ClipboardCheck, FileStack, Network } from 'lucide-react'
+import { CarFront, RefreshCcw, ArrowLeftRight, BadgeIndianRupee, FileCheck2, Network } from 'lucide-react'
 
 export interface Service {
   id: string
@@ -14,23 +14,24 @@ export interface Service {
 }
 
 /**
- * Services appropriate for a DSA distributor: CARZENX assists, prepares and
- * routes applications — the lender approves, prices and disburses.
+ * CARZENX loan products (DSA distributor: CARZENX assists, prepares and routes
+ * applications — the lending partner approves, prices and disburses).
+ * Tenures are indicative and always subject to the lender's policy.
  */
 export const services: Service[] = [
   {
     id: 'new-car-loan',
     index: '01',
     icon: CarFront,
-    title: 'New Car Loan Assistance',
-    short: 'Guidance from showroom quotation to a lender-ready application for your new car.',
+    title: 'New Car Loan',
+    short: 'Finance for your new car with a tenure of 5 to 7 years, from quotation to disbursal.',
     description:
-      'Buying a new car involves choosing the vehicle and the finance together. We help you understand the options available through our lending partners, prepare your application around the on-road quotation, and keep the process moving with the dealer and the lender.',
+      'Buying a new car involves choosing the vehicle and the finance together. We prepare your application around the on-road quotation, connect you with banks such as Axis Bank and ICICI Bank, and keep the process moving with the dealer and the lender — with loan tenures of 5 to 7 years.',
     includes: [
-      'Requirement and budget discussion',
-      'Introductions to suitable lending partners',
-      'Application preparation around the dealer quotation',
-      'Follow-up through to the lender’s decision',
+      'Loan tenure of 5 to 7 years',
+      'Application prepared around the dealer quotation',
+      'Partner banks such as Axis Bank and ICICI Bank',
+      'Loan + RTO support in one place',
     ],
     image: 'showroom-white',
     imageAlt: 'A white performance car displayed in a bright, glass-fronted showroom',
@@ -39,66 +40,66 @@ export const services: Service[] = [
     id: 'used-car-loan',
     index: '02',
     icon: RefreshCcw,
-    title: 'Used Car Loan Assistance',
-    short: 'Support for pre-owned car finance, including vehicle and ownership paperwork.',
+    title: 'Used Car Loan',
+    short: 'Pre-owned car finance with a tenure of 5 to 6 years, including vehicle paperwork.',
     description:
-      'Pre-owned car finance usually needs more than personal documents — lenders also look at the vehicle’s age, registration, insurance and valuation. We help you understand what is typically required and assemble a complete application.',
+      'Pre-owned car finance needs more than personal documents — lenders also look at the vehicle’s age, registration, insurance and valuation. We assemble a complete application, coordinate with the seller or dealer and route it to suitable partner banks, with loan tenures of 5 to 6 years.',
     includes: [
-      'Guidance on lender criteria for pre-owned vehicles',
+      'Loan tenure of 5 to 6 years',
       'RC, insurance and valuation paperwork checklist',
       'Coordination with the seller or dealer',
-      'Application submission to suitable partners',
+      'RTO transfer support alongside the loan',
     ],
     image: 'black-car-rain',
     imageAlt: 'A black luxury coupé parked on a city street, raindrops on its paintwork',
   },
   {
-    id: 'finance-assistance',
+    id: 'car-refinance',
     index: '03',
-    icon: Landmark,
-    title: 'Car Finance Assistance',
-    short: 'Help comparing the finance options presented by lending partners — clearly explained.',
+    icon: ArrowLeftRight,
+    title: 'Car Refinance',
+    short: 'Raise funds against a car you already own, with a tenure of up to 5 years.',
     description:
-      'Loan offers differ in tenure, processing charges and conditions. We help you read and compare the options that lending partners present, so you can make an informed choice. Final rates and terms are always set by the lender.',
+      'Already own your car outright? A refinance loan lets you unlock funds against it. We check the vehicle and your profile against lender criteria, prepare the paperwork and submit your application to suitable partner banks — with tenures of up to 5 years.',
     includes: [
-      'Plain-language explanation of loan terms',
-      'Side-by-side view of options received',
-      'Tenure and EMI planning conversations',
-      'Transparent communication at every stage',
+      'Loan tenure of up to 5 years',
+      'Vehicle and profile check against lender criteria',
+      'RC and insurance documentation guidance',
+      'Application submission and status tracking',
     ],
     image: 'consultation',
     imageAlt: 'A finance consultant reviewing paperwork at a desk inside a car showroom',
   },
   {
-    id: 'application-support',
+    id: 'bt-top-up',
     index: '04',
-    icon: ClipboardCheck,
-    title: 'Loan Application Support',
-    short: 'Accurate, complete applications that reduce back-and-forth with lenders.',
+    icon: BadgeIndianRupee,
+    title: 'BT Top-up (Balance Transfer)',
+    short: 'Move your running car loan and take a top-up on it — for cars up to 12 years old.',
     description:
-      'Incomplete or inconsistent applications are among the most common causes of delay. We help you fill in applications correctly, check details before submission and track status with the lending partner on your behalf.',
+      'With a balance transfer top-up, your existing car loan moves to a partner bank such as Axis Bank or ICICI Bank, with an additional top-up amount on it. Available for cars up to 12 years old, with tenures of up to 5 years, subject to the lender’s assessment.',
     includes: [
-      'Application form assistance',
-      'Pre-submission completeness check',
-      'Status tracking with the lender',
-      'A single point of contact',
+      'For cars up to 12 years old',
+      'Loan tenure of up to 5 years',
+      'Partner banks such as Axis Bank and ICICI Bank',
+      'Foreclosure and transfer paperwork handled',
     ],
     image: 'documentation',
     imageAlt: 'Two people signing documents across a white table in a modern office',
   },
   {
-    id: 'documentation',
+    id: 'loan-rto',
     index: '05',
-    icon: FileStack,
-    title: 'Documentation Guidance',
-    short: 'A clear checklist of KYC, income and vehicle documents lenders typically request.',
+    icon: FileCheck2,
+    title: 'Loan + RTO Services',
+    short: 'Your car loan and RTO work handled together — registration, transfer and hypothecation.',
     description:
-      'From KYC and income proof to bank statements and vehicle paperwork, we explain what lenders typically ask for, help you organise it, and flag gaps early — so your application is ready the first time.',
+      'A car loan is only half the job — the RTO paperwork has to follow. Alongside your loan, we help with registration, ownership transfer and hypothecation entries, so the loan and the vehicle records stay in step.',
     includes: [
-      'Personalised document checklist',
-      'Salaried and self-employed guidance',
-      'Vehicle paperwork for new and used cars',
-      'Secure, consent-based handling of documents',
+      'New registration support',
+      'Ownership transfer for used cars',
+      'Hypothecation addition and removal',
+      'One point of contact for loan and RTO',
     ],
     image: 'keys-closeup',
     imageAlt: 'Close-up of car keys being handed from one person to another',
@@ -107,14 +108,14 @@ export const services: Service[] = [
     id: 'dealer-distribution',
     index: '06',
     icon: Network,
-    title: 'Dealer Finance Distribution',
-    short: 'A finance desk partner for dealerships — connecting your buyers to lending partners.',
+    title: 'Dealer & Distributorship',
+    short: 'Pan-India distributorship for dealers and partners — connecting your buyers to banks.',
     description:
-      'For automotive dealers, CARZENX acts as a finance distribution partner: we help your customers access suitable lending partners, support their paperwork and keep your sales team informed, so finance supports the sale instead of slowing it.',
+      'Since 2017, CARZENX has worked pan-India with dealers, distributors and banks. We offer distributorship to partners and act as a finance desk for dealerships — helping customers access suitable lending partners, supporting their paperwork and keeping your sales team informed.',
     includes: [
+      'Pan-India distributorship opportunities',
       'Customer finance support for dealerships',
-      'Connectivity with multiple lending partners',
-      'Documentation handling for dealer customers',
+      'Connectivity with partner banks',
       'Regular status updates for sales teams',
     ],
     image: 'dealer-showroom',

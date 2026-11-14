@@ -18,12 +18,12 @@ export const site = {
   tagline: 'Car Loan • DSA Distributor',
   url: 'https://www.carzenx.com', // placeholder domain — update before going live
   description:
-    'CARZENX is a car loan DSA distributor that helps car buyers and automotive dealers connect with suitable lending partners, with end-to-end application support and documentation guidance.',
+    'CARZENX is a pan-India car loan DSA distributor, working since 2017, that helps car buyers, dealers and distributors connect with banks such as Axis Bank and ICICI Bank for new car, used car, refinance and balance transfer top-up loans, along with RTO support.',
   contact: {
-    phone: { label: 'Phone', value: '[Add phone number]', placeholder: true } as ContactItem,
+    phone: { label: 'Phone', value: '+91 91525 28886', href: 'tel:+919152528886', placeholder: false } as ContactItem,
     email: { label: 'Email', value: '[Add email address]', placeholder: true } as ContactItem,
-    office: { label: 'Office', value: '[Add office address, City, State, PIN]', placeholder: true } as ContactItem,
-    hours: { label: 'Business hours', value: '[Add business hours, e.g. Mon–Sat]', placeholder: true } as ContactItem,
+    office: { label: 'Head branch', value: 'Mumbai, Maharashtra', placeholder: false } as ContactItem,
+    hours: { label: 'Business hours', value: 'Mon–Sat', placeholder: false } as ContactItem,
   },
   /** Add official profiles only. Left empty on purpose — none were verified. */
   social: [] as { label: string; href: string }[],

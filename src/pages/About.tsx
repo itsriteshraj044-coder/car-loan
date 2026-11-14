@@ -61,11 +61,11 @@ export default function About() {
         crumb="About"
         lines={['Built around the', 'journey to your', 'next car.']}
         accent={{ journey: 'text-red' }}
-        lead="CARZENX is a car loan and DSA distribution company focused on one thing: making car finance clearer and easier to navigate for buyers and automotive dealers."
+        lead="Since 2017, CARZENX has worked pan-India as a car loan and DSA distribution company, making car finance clearer and easier for buyers, dealers and distributors."
         image="mountain-highway"
         imageAlt="An SUV driving along a winding mountain highway at sunset"
         footLeft="About CARZENX"
-        footRight="Car Loan · DSA Distributor"
+        footRight="Pan-India · Since 2017"
       />
 
       {/* Who we are / what we do */}
@@ -78,10 +78,10 @@ export default function About() {
               the car itself.
             </p>
             <p data-reveal>
-              CARZENX works as a Direct Selling Agent (DSA) distributor for car loans. We help individuals and dealership
-              customers understand their options, prepare complete applications and connect with lending partners whose
-              criteria suit their profile. We don’t lend money ourselves — we make the path to the right lender clearer, faster
-              and better organised.
+              Since 2017, CARZENX has worked pan-India as a Direct Selling Agent (DSA) distributor for car loans, with our
+              head branch in Mumbai. We arrange new car, used car, refinance and BT top-up loans with partner banks such as
+              Axis Bank and ICICI Bank, handle the RTO work alongside, and offer distributorship to dealers and partners. We
+              don’t lend money ourselves — we make the path to the right lender clearer, faster and better organised.
             </p>
             <div data-reveal><CTAButton to="/services" variant="ghost">Explore our services</CTAButton></div>
           </div>
@@ -92,6 +92,43 @@ export default function About() {
             sizes="(max-width: 900px) 100vw, 55vw"
             from="right"
           />
+        </div>
+      </section>
+
+      {/* Leadership */}
+      <section className="section" aria-labelledby="leadership-title" style={{ paddingTop: 0 }}>
+        <SectionTitle
+          eyebrow="Leadership"
+          title={<span id="leadership-title">The people behind CARZENX.</span>}
+          lead="CARZENX is led by its directors, who have built the business pan-India since 2017."
+          layout="split"
+        />
+        <div className={styles.mvv} data-reveal="stagger">
+          <article className={styles.mvvCard}>
+            <div className={styles.mvvLabel}><span>Director</span><span>01</span></div>
+            <div>
+              <h3>Vishal Pandey</h3>
+              <p>Director, CARZENX</p>
+            </div>
+          </article>
+          <article className={`${styles.mvvCard} ${styles.featured}`}>
+            <div className={styles.mvvLabel}><span>Director</span><span>02</span></div>
+            <div>
+              <h3>Arshia Naz</h3>
+              <p>Director, CARZENX</p>
+            </div>
+          </article>
+          <article className={styles.mvvCard}>
+            <div className={styles.mvvLabel}><span>Head branch</span><span>03</span></div>
+            <div>
+              <h3>Mumbai, pan-India.</h3>
+              <ul>
+                <li>Working since 2017</li>
+                <li>Dealers, distributors &amp; banks</li>
+                <li>Distributorship for partners</li>
+              </ul>
+            </div>
+          </article>
         </div>
       </section>
 

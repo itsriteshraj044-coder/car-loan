@@ -8,27 +8,62 @@ import SectionTitle from '../components/SectionTitle'
 import CTAButton from '../components/CTAButton'
 import Img from '../components/Img'
 import { site } from '../data/site'
-import { services } from '../data/services'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { useIntroDone } from '../context/IntroContext'
 import { gsap, prefersReducedMotion } from '../hooks/gsap'
 import styles from './Contact.module.css'
 
-const requirements = [
-  ...services.map((s) => ({ value: s.id, label: s.title })),
-  { value: 'other', label: 'Something else' },
+/** The four loan types offered in the enquiry form. Values match service ids so /contact?service=… pre-selects. */
+const loanTypes = [
+  { value: 'new-car-loan', label: 'New car loan' },
+  { value: 'used-car-loan', label: 'Used car loan' },
+  { value: 'bt-top-up', label: 'BT top-up (balance transfer)' },
+  { value: 'car-refinance', label: 'Car refinance' },
 ]
 
-type Values = { name: string; phone: string; email: string; city: string; requirement: string; message: string; consent: boolean }
+const CURRENT_YEAR = 2026
+const OLDEST_YEAR = 2014
+const years = Array.from({ length: CURRENT_YEAR - OLDEST_YEAR + 1 }, (_, i) => {
+  const y = String(CURRENT_YEAR - i)
+  return { value: y, label: i === 0 ? `${y} (New)` : y }
+})
+
+const states = [
+  'Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh',
+  'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir',
+  'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya',
+  'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+  'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+].map((s) => ({ value: s, label: s }))
+
+type Values = {
+  name: string
+  phone: string
+  makeModel: string
+  year: string
+  regState: string
+  regNumber: string
+  loanType: string
+  message: string
+  consent: boolean
+}
 type Errors = Partial<Record<keyof Values, string>>
+
+/** A new car has no registration number yet, so it is only required for the other loan types. */
+const needsRegNumber = (v: Values) => v.loanType !== 'new-car-loan'
 
 function validate(v: Values): Errors {
   const e: Errors = {}
   if (v.name.trim().length < 2) e.name = 'Please enter your full name.'
   if (!/^(\+?91[\s-]?)?[6-9]\d{9}$/.test(v.phone.replace(/[\s-]/g, ''))) e.phone = 'Enter a valid 10-digit Indian mobile number.'
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email.trim())) e.email = 'Enter a valid email address.'
-  if (v.city.trim().length < 2) e.city = 'Please enter your city.'
-  if (!v.requirement) e.requirement = 'Select what you need help with.'
+  if (v.makeModel.trim().length < 2) e.makeModel = 'Enter the car make and model, e.g. Maruti Swift.'
+  if (!v.year) e.year = 'Select the car’s year.'
+  if (!v.regState) e.regState = 'Select the registration state.'
+  const reg = v.regNumber.replace(/[\s-]/g, '')
+  if ((needsRegNumber(v) || reg) && !/^[A-Z]{2}\d{1,2}[A-Z]{0,3}\d{1,4}$/.test(reg)) {
+    e.regNumber = 'Enter a valid registration number, e.g. BR07CR1234.'
+  }
+  if (!v.loanType) e.loanType = 'Select the type of loan you need.'
   if (!v.consent) e.consent = 'Please confirm you agree to be contacted.'
   return e
 }
@@ -44,15 +79,18 @@ export default function Contact() {
 
   const preset = useMemo(() => {
     const s = params.get('service')
-    return requirements.some((r) => r.value === s) ? (s as string) : ''
+    return loanTypes.some((r) => r.value === s) ? (s as string) : ''
   }, [params])
 
-  const [values, setValues] = useState<Values>({ name: '', phone: '', email: '', city: '', requirement: preset, message: '', consent: false })
+  const [values, setValues] = useState<Values>({
+    name: '', phone: '', makeModel: '', year: '', regState: '', regNumber: '', loanType: preset, message: '', consent: false,
+  })
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
 
   const set = (k: keyof Values) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const val = k === 'consent' ? (e.target as HTMLInputElement).checked : e.target.value
+    const val =
+      k === 'consent' ? (e.target as HTMLInputElement).checked : k === 'regNumber' ? e.target.value.toUpperCase() : e.target.value
     setValues((v) => ({ ...v, [k]: val }))
     if (errors[k]) setErrors((er) => ({ ...er, [k]: undefined }))
   }
@@ -84,6 +122,27 @@ export default function Contact() {
     return () => ctx.revert()
   }, [introDone])
 
+  const select = (k: keyof Values, label: string, options: { value: string; label: string }[], full = false) => (
+    <div className={`${styles.field} ${full ? styles.full : ''} ${values[k] ? styles.filled : ''} ${errors[k] ? styles.invalid : ''}`}>
+      <select
+        id={`f-${k}`}
+        name={k}
+        value={values[k] as string}
+        onChange={set(k)}
+        aria-invalid={!!errors[k]}
+        aria-describedby={errors[k] ? `e-${k}` : undefined}
+        required
+      >
+        <option value="" disabled hidden />
+        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+      <label htmlFor={`f-${k}`}>{label}<b> *</b></label>
+      <ChevronDown className={styles.chev} size={18} aria-hidden="true" />
+      <span className={styles.bar} />
+      {errors[k] && <span id={`e-${k}`} className={styles.error}>{errors[k]}</span>}
+    </div>
+  )
+
   const field = (k: keyof Values, label: string, opts: { type?: string; autoComplete?: string; full?: boolean; required?: boolean; inputMode?: 'tel' | 'email' | 'text' } = {}) => (
     <div className={`${styles.field} ${opts.full ? styles.full : ''} ${errors[k] ? styles.invalid : ''}`}>
       <input
@@ -111,7 +170,7 @@ export default function Contact() {
     <div ref={root}>
       <Seo
         title="Contact CARZENX | Car Loan Enquiry"
-        description="Send an enquiry to CARZENX for new or used car loan assistance, documentation guidance or dealer finance partnership. Our team will get back to you."
+        description="Send an enquiry to CARZENX for a new car loan, used car loan, BT top-up or car refinance. Head branch Mumbai, working pan-India."
         path="/contact"
       />
 
@@ -178,31 +237,17 @@ export default function Contact() {
                 <form className={styles.form} onSubmit={onSubmit} noValidate>
                   {field('name', 'Full name', { autoComplete: 'name' })}
                   {field('phone', 'Mobile number', { type: 'tel', autoComplete: 'tel', inputMode: 'tel' })}
-                  {field('email', 'Email address', { type: 'email', autoComplete: 'email', inputMode: 'email' })}
-                  {field('city', 'City', { autoComplete: 'address-level2' })}
-
-                  <div className={`${styles.field} ${styles.full} ${values.requirement ? styles.filled : ''} ${errors.requirement ? styles.invalid : ''}`}>
-                    <select
-                      id="f-requirement"
-                      name="requirement"
-                      value={values.requirement}
-                      onChange={set('requirement')}
-                      aria-invalid={!!errors.requirement}
-                      aria-describedby={errors.requirement ? 'e-requirement' : undefined}
-                      required
-                    >
-                      <option value="" disabled hidden />
-                      {requirements.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
-                    </select>
-                    <label htmlFor="f-requirement">Vehicle / loan requirement<b> *</b></label>
-                    <ChevronDown className={styles.chev} size={18} aria-hidden="true" />
-                    <span className={styles.bar} />
-                    {errors.requirement && <span id="e-requirement" className={styles.error}>{errors.requirement}</span>}
-                  </div>
+                  {field('makeModel', 'Car make / model')}
+                  {select('year', 'Year', years)}
+                  {select('regState', 'Registration state', states)}
+                  {field('regNumber', needsRegNumber(values) ? 'Registration no. (e.g. BR07CR1234)' : 'Registration no. (if allotted)', {
+                    required: needsRegNumber(values),
+                  })}
+                  {select('loanType', 'Loan type', loanTypes, true)}
 
                   <div className={`${styles.field} ${styles.full}`}>
                     <textarea id="f-message" name="message" placeholder=" " rows={4} value={values.message} onChange={set('message')} />
-                    <label htmlFor="f-message">Message — car model, budget, timeline (optional)</label>
+                    <label htmlFor="f-message">Message — loan amount, timeline (optional)</label>
                     <span className={styles.bar} />
                   </div>
 

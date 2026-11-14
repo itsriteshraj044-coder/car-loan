@@ -19,7 +19,7 @@ const benefits = [
   {
     icon: Network,
     title: 'Multiple financing connections',
-    text: 'One conversation opens access to several lending partners, instead of approaching each bank or NBFC on your own.',
+    text: 'One conversation opens access to partner banks such as Axis Bank and ICICI Bank, instead of approaching each lender on your own.',
   },
   {
     icon: Workflow,
@@ -28,20 +28,20 @@ const benefits = [
   },
   {
     icon: Gauge,
-    title: 'Automotive-focused expertise',
-    text: 'We work only in car finance, so we understand dealer quotations, on-road pricing and new versus pre-owned paperwork.',
+    title: 'Since 2017, pan-India',
+    text: 'Close to a decade working only in car finance across India — new, used, refinance and BT top-up loans, plus RTO work.',
   },
   {
     icon: Handshake,
-    title: 'DSA distribution network',
-    text: 'A structured distribution model that links buyers and dealerships to lenders, with transparency on who decides what.',
+    title: 'Dealer, distribution & bank network',
+    text: 'We work with dealers, distributors and banks, and offer distributorship to partners across India.',
   },
 ]
 
 const steps: ProcessStep[] = [
   {
     title: 'Share your requirement',
-    text: 'Tell us about the car you have in mind — new or pre-owned, budget and preferred tenure — with a few basic profile details.',
+    text: 'Tell us the loan you need — new car, used car, refinance or BT top-up — with your car and a few basic profile details.',
   },
   {
     title: 'Explore suitable finance options',
@@ -65,7 +65,7 @@ export default function Home() {
     <div ref={root}>
       <Seo
         title="CARZENX | Car Loan Assistance & DSA Distributor"
-        description="CARZENX is a car loan DSA distributor connecting car buyers and automotive dealers with suitable lending partners — with application support and documentation guidance for new and used car finance."
+        description="CARZENX is a pan-India car loan DSA distributor since 2017 — new car, used car, refinance and BT top-up loans with partner banks such as Axis Bank and ICICI Bank, plus RTO services and dealer distributorship."
         path="/"
       />
 
@@ -81,16 +81,16 @@ export default function Home() {
             />
             <WordsReveal
               className={styles.statement}
-              text="Finding the right car is exciting. Financing it shouldn’t be confusing. As a dedicated car loan DSA distributor, CARZENX sits between you and a network of lending partners — so you can compare options, prepare the right documents and move ahead with confidence."
+              text="Since 2017, CARZENX has worked pan-India as a dedicated car loan DSA distributor. We arrange new car, used car, refinance and BT top-up loans with partner banks such as Axis Bank and ICICI Bank, handle the RTO work alongside, and offer distributorship to partners across the country."
             />
             <div className={styles.introMeta} data-reveal="stagger">
               <div>
                 <h3>For car buyers</h3>
-                <p>Guidance on new and used car finance, from first conversation to the lender’s decision.</p>
+                <p>New car, used car, refinance and BT top-up loans, with RTO support alongside.</p>
               </div>
               <div>
-                <h3>For automotive dealers</h3>
-                <p>A finance distribution partner that helps your customers access suitable lenders.</p>
+                <h3>For dealers &amp; distributors</h3>
+                <p>A pan-India finance distribution partner, with distributorship for partners.</p>
               </div>
             </div>
             <div data-reveal>
@@ -113,7 +113,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Marquee items={['New Car Loans', 'Used Car Loans', 'Application Support', 'Documentation Guidance', 'Dealer Finance', 'Lending Partner Network']} />
+      <Marquee items={['New Car Loans', 'Used Car Loans', 'Car Refinance', 'BT Top-up', 'Loan + RTO', 'Dealer Distributorship']} />
 
       {/* 2 — Why CARZENX */}
       <section className="section section--dark" aria-labelledby="why-title">
@@ -166,8 +166,8 @@ export default function Home() {
           Built for the <em>road</em> ahead.
         </h2>
         <div className={styles.editorialFoot} data-reveal="stagger">
-          <div><strong>New or pre-owned</strong><span>Assistance for both, with the right paperwork for each.</span></div>
-          <div><strong>Buyer or dealer</strong><span>Support for individuals and for dealerships’ customers.</span></div>
+          <div><strong>New, used, refinance or top-up</strong><span>Four loan types, with the right paperwork and RTO work for each.</span></div>
+          <div><strong>Pan-India since 2017</strong><span>Working with buyers, dealers, distributors and banks across India.</span></div>
           <div><strong>One point of contact</strong><span>Someone who knows your application, from start to decision.</span></div>
         </div>
       </section>

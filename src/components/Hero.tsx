@@ -91,8 +91,8 @@ export default function Hero() {
 
         <div className={styles.row}>
           <p className={styles.sub} data-hero-fade>
-            CARZENX connects car buyers and automotive dealers with suitable lending partners through its DSA
-            distribution network — with clear guidance, application support and documentation help at every step.
+            Since 2017, CARZENX has worked pan-India as a car loan DSA distributor — new car, used car, refinance and
+            BT top-up loans with partner banks, plus RTO support and distributorship for dealers.
           </p>
           <div className={styles.ctas} data-hero-fade>
             <CTAButton to="/contact">Get Started</CTAButton>
@@ -102,9 +102,9 @@ export default function Hero() {
       </div>
 
       <div className={styles.bar} data-hero-fade>
-        <span className={styles.point}><CarFront size={18} /> New &amp; used car finance assistance</span>
-        <span className={styles.point}><Network size={18} /> Connections with multiple lending partners</span>
-        <span className={styles.point}><FileCheck2 size={18} /> Documentation guidance, start to finish</span>
+        <span className={styles.point}><CarFront size={18} /> New, used, refinance &amp; BT top-up loans</span>
+        <span className={styles.point}><Network size={18} /> Pan-India network since 2017</span>
+        <span className={styles.point}><FileCheck2 size={18} /> Loan + RTO, start to finish</span>
         <span className={styles.scroll}>
           <span className={styles.scrollLine} /> Scroll
         </span>
