@@ -1,6 +1,6 @@
 # CARZENX — Car Loan & DSA Distributor website
 
-React 19 + TypeScript + Vite, React Router, GSAP (ScrollTrigger), Framer Motion, Lenis, Lucide icons, CSS Modules.
+React 19 + TypeScript + Vite, React Router, Lucide icons, one global stylesheet.
 
 ```bash
 npm install
@@ -9,25 +9,27 @@ npm run build     # type-check + production build to dist/
 npm run preview   # serve the production build
 ```
 
-## Before going live — replace the placeholders
-
-No verified public CARZENX information (contact details, address, social profiles) could be found, so nothing was invented.
+## Editing content
 
 | What | Where |
 | --- | --- |
-| Phone, email, office address, business hours | `src/data/site.ts` → `site.contact` (set `value`, add `href` such as `tel:` / `mailto:`, set `placeholder: false`) |
-| Production domain (canonical + Open Graph URLs) | `src/data/site.ts` → `site.url` |
-| Official social profiles (footer) | `src/data/site.ts` → `site.social` |
-| Enquiry form submission (currently simulated) | `src/pages/Contact.tsx` → `onSubmit` (`TODO` comment) |
-| Services copy | `src/data/services.ts` |
+| Phone, email, office, hours, directors, partner banks, WhatsApp | `src/data/site.ts` |
+| Loan products (copy, tenures, documents, steps, FAQs, images) | `src/data/services.ts` |
+| Home page FAQ | `src/data/faqs.ts` |
+| Privacy Policy, Terms, Disclaimer | `src/data/legal.ts` |
+| Form delivery | `src/components/forms.tsx` → `sendLead()` |
 
-Copy deliberately avoids approval, rate or "guaranteed" claims: CARZENX is presented as a DSA that assists and routes applications, while lenders decide and disburse. A disclosure line lives in `src/data/site.ts` → `disclosure`.
+Forms (Apply, Contact, Dealer partner) validate in the browser and then open the visitor's email app with the enquiry prefilled to `support@carzenx.in`, because the site is static hosting with no server. To store leads on a server instead, replace `sendLead()` with a `fetch()` to your endpoint.
 
-## Brand
+Copy avoids approval, rate or "guaranteed" claims: CARZENX is presented as a DSA that assists and routes applications, while lenders decide and disburse.
 
-- Logo: `public/images/carzenx-logo.png` (background removed from the supplied artwork, colours untouched) and a 720px version. The tagline in the logo is black, so the logo is only placed on light surfaces (header, loader, footer).
-- Colours from the logo: blue `#0A45F5`, red `#F0141A`, ink `#0B0D12`, white / mist neutrals — tokens in `src/styles/global.css`.
-- Type: Manrope (display + body), Space Grotesk (labels / numerals).
+## Design
+
+- Design system from the CARZENX design files: logo blue `#1248FF`, near-black `#07090F`, white, red `#FF1825` accent, Manrope, pill buttons, outlined numerals, dotted grey sections.
+- Page structure takes cues from automotive-fintech sites (benefit tiles, stats strip, audience tabs for buyers / dealers / lenders, product grid, EMI tool, partner strip), rewritten for CARZENX.
+- Plain React + CSS: one stylesheet (`src/styles/global.css`), CSS keyframe animations and an IntersectionObserver reveal (`src/hooks/useReveal.ts`). Everything respects `prefers-reduced-motion`.
+- Pages: Home, About, Loans (`/services`), one page per loan (`/services/:id`), Dealer Network, Apply (3-step form), Contact, Privacy Policy, Terms & Conditions, Disclaimer, 404.
+- The previous design's source is backed up (git-ignored) in `_src/old-design-backup/`.
 
 ## Media & licences
 
@@ -40,16 +42,15 @@ All media is self-hosted in `public/`.
 
 ```
 src/
-  components/  Header, Footer, LoadingScreen, Hero, PageHero, SectionTitle, CTAButton,
-               ServiceCard, ProcessSection, ImageReveal, PageTransition, CTASection,
-               Marquee, Cursor, SplitText, WordsReveal, Img, Logo, Seo
-  pages/       Home, About, Services, Contact, NotFound
-  hooks/       useLenis, useScrollAnimation, gsap (plugin registration)
-  data/        services.ts, site.ts
-  context/     IntroContext (signals when the loading screen has finished)
+  components/  Header, Footer, EmiCalculator, forms (Apply/Contact/Partner form parts), ui (Img, Logo, Seo,
+               SectionHead, PageHero, ServiceCard, Steps, Faq, CtaBand)
+  pages/       Home, About, Services, ServiceDetail, DealerNetwork, Apply, Contact, Legal, NotFound
+  hooks/       useReveal (scroll reveal)
+  data/        site.ts, services.ts, faqs.ts, legal.ts
+  styles/      global.css (design system)
 ```
 
-Scroll animations are declarative: add `data-reveal`, `data-reveal="stagger"`, `data-parallax="0.15"` or use `<WordsReveal>` inside any page that calls `useScrollAnimation`. Everything respects `prefers-reduced-motion`.
+Add `className="rv"` to any element to fade it up on scroll; `.tl` timelines draw their line when visible.
 
 ## Hosting
 

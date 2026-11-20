@@ -7,8 +7,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (id.includes('node_modules/gsap')) return 'gsap'
-          if (id.includes('node_modules/framer-motion') || id.includes('node_modules/motion-')) return 'motion'
           if (id.includes('node_modules/react') || id.includes('node_modules/scheduler')) return 'react'
         },
       },

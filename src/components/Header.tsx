@@ -1,143 +1,140 @@
-import { useEffect, useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'framer-motion'
-import Logo from './Logo'
-import CTAButton from './CTAButton'
+import { useEffect, useRef, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { ChevronDown, Phone } from 'lucide-react'
 import { nav, site } from '../data/site'
-import { getLenis } from '../hooks/useLenis'
-import styles from './Header.module.css'
+import { services } from '../data/services'
+import { Logo } from './ui'
 
-const ease = [0.22, 1, 0.36, 1] as const
+const serviceHref = (id: string) => (id === 'dealer-distributorship' ? '/dealer-network' : `/services/${id}`)
 
 export default function Header() {
-  const [compact, setCompact] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 768px)').matches)
+  const [dd, setDd] = useState(false)
+  const burger = useRef<HTMLButtonElement>(null)
   const { pathname } = useLocation()
-  const { scrollY, scrollYProgress } = useScroll()
-  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 })
-
-  useMotionValueEvent(scrollY, 'change', (v) => setCompact(v > 40))
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)')
-    const on = () => setNarrow(mq.matches)
-    mq.addEventListener('change', on)
-    return () => mq.removeEventListener('change', on)
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // close the menu on navigation
-  useEffect(() => setOpen(false), [pathname])
-
-  // lock scrolling while the mobile menu is open
   useEffect(() => {
-    const lenis = getLenis()
-    if (open) { lenis?.stop(); document.body.style.overflow = 'hidden' }
-    else { lenis?.start(); document.body.style.overflow = '' }
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    setOpen(false)
+    setDd(false)
+  }, [pathname])
+
+  useEffect(() => {
+    document.body.classList.toggle('lock', open)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (open) burger.current?.focus()
+        setOpen(false)
+        setDd(false)
+      }
+    }
+    const onResize = () => window.innerWidth > 1080 && setOpen(false)
+    document.addEventListener('keydown', onKey)
+    window.addEventListener('resize', onResize)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', onResize)
+    }
   }, [open])
 
-  const logoH = narrow ? (compact ? 28 : 32) : compact ? 34 : 42
+  const loansActive = pathname.startsWith('/services')
 
   return (
     <>
-      <header className={`${styles.header} ${compact || open ? styles.compact : ''}`}>
-        <Logo className={styles.logo} height={logoH} />
-
-        <nav className={styles.nav} aria-label="Primary">
-          {nav.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
-              data-cursor="hover"
-            >
-              {({ isActive }) => (
-                <>
-                  {item.label}
-                  {isActive && <motion.span layoutId="nav-dot" className={styles.indicator} transition={{ duration: 0.5, ease }} />}
-                </>
-              )}
-            </NavLink>
-          ))}
-        </nav>
-
-        <div className={styles.actions}>
-          <CTAButton to="/contact" size="sm" className={styles.desktopCta}>Apply Now</CTAButton>
-          <button
-            className={styles.burger}
-            onClick={() => setOpen((o) => !o)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-          >
-            <motion.span
-              initial={false}
-              animate={open ? { top: '50%', rotate: 45, width: '1.3rem' } : { top: '40%', rotate: 0, width: '1.3rem' }}
-              transition={{ duration: 0.4, ease }}
-            />
-            <motion.span
-              initial={false}
-              animate={open ? { top: '50%', rotate: -45, width: '1.3rem' } : { top: '60%', rotate: 0, width: '0.85rem' }}
-              transition={{ duration: 0.4, ease }}
-            />
-          </button>
-        </div>
-
-        <motion.div className={styles.progress} style={{ scaleX: progress }} aria-hidden="true" />
-      </header>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-menu"
-            className={styles.menu}
-            initial={{ clipPath: 'inset(0 0 100% 0)' }}
-            animate={{ clipPath: 'inset(0 0 0% 0)' }}
-            exit={{ clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.65, ease: [0.76, 0, 0.24, 1] }}
-            data-lenis-prevent
-          >
-            <nav aria-label="Mobile">
-              <ul className={styles.menuList}>
-                {nav.map((item, i) => (
-                  <motion.li
-                    key={item.to}
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 20, opacity: 0, transition: { duration: 0.2 } }}
-                    transition={{ delay: 0.25 + i * 0.07, duration: 0.7, ease }}
+      <header className={`hdr ${scrolled ? 'scrolled' : ''}`}>
+        <div className="wrap hdr-in">
+          <Link to="/" className="logo" aria-label="CARZENX home">
+            <Logo />
+          </Link>
+          <nav className="nav" aria-label="Primary">
+            {nav.map((n) =>
+              n.to === '/services' ? (
+                <div className={`dd ${dd ? 'open' : ''}`} key={n.to} onMouseLeave={() => setDd(false)}>
+                  <button
+                    className={`lnk ${loansActive ? 'on' : ''}`}
+                    aria-expanded={dd}
+                    aria-controls="loans-menu"
+                    onClick={() => setDd((v) => !v)}
                   >
-                    <NavLink
-                      to={item.to}
-                      end={item.to === '/'}
-                      className={({ isActive }) => `${styles.menuLink} ${isActive ? styles.menuActive : ''}`}
-                    >
-                      <small>0{i + 1}</small>
-                      {item.label}
-                    </NavLink>
-                  </motion.li>
-                ))}
-              </ul>
-            </nav>
-            <motion.div
-              className={styles.menuFoot}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.6 } }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                    {n.label} <ChevronDown size={16} aria-hidden="true" />
+                  </button>
+                  <div className="dd-menu" id="loans-menu">
+                    {services.map((s) => {
+                      const Icon = s.icon
+                      return (
+                        <Link key={s.id} to={serviceHref(s.id)}>
+                          <span className="ic">
+                            <Icon size={20} aria-hidden="true" />
+                          </span>
+                          <span>
+                            <b>{s.title}</b>
+                            <small>{s.nav}</small>
+                          </span>
+                        </Link>
+                      )
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <NavLink key={n.to} to={n.to} end className={({ isActive }) => `lnk ${isActive ? 'on' : ''}`}>
+                  {n.label}
+                </NavLink>
+              ),
+            )}
+          </nav>
+          <div className="hdr-cta">
+            <a className="hdr-call" href={site.phone.href}>
+              <Phone size={17} aria-hidden="true" /> {site.phone.display}
+            </a>
+            <Link to="/apply" className="btn btn-blue btn-sm">
+              Apply Now
+            </Link>
+            <button
+              ref={burger}
+              className="burger"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="drawer"
+              onClick={() => setOpen((v) => !v)}
             >
-              <CTAButton to="/contact" block magnetic={false}>Get Started</CTAButton>
-              <div className={styles.menuMeta}>
-                <span>{site.contact.phone.value}</span>
-                <span>{site.contact.email.value}</span>
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
+        </div>
+      </header>
+      <div className={`drawer ${open ? 'open' : ''}`} id="drawer" aria-hidden={!open} inert={!open}>
+        {nav.map((n) => (
+          <div key={n.to}>
+            <NavLink to={n.to} end className={({ isActive }) => `dl ${isActive ? 'on' : ''}`}>
+              {n.label}
+            </NavLink>
+            {n.to === '/services' && (
+              <div className="sub">
+                {services.map((s) => (
+                  <Link key={s.id} to={serviceHref(s.id)}>
+                    {s.title}
+                  </Link>
+                ))}
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            )}
+          </div>
+        ))}
+        <Link className="btn btn-blue btn-lg" to="/apply">
+          Apply Now
+        </Link>
+        <a className="btn btn-ghost btn-lg" href={site.phone.href}>
+          <Phone size={17} aria-hidden="true" /> {site.phone.display}
+        </a>
+      </div>
     </>
   )
 }
