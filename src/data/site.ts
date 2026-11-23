@@ -14,9 +14,8 @@ export const site = {
   /** WhatsApp number with country code, digits only. Leave empty to hide WhatsApp buttons. */
   whatsapp: '',
   directors: [
+    { name: 'Harisha Naz', initials: 'HN', role: 'Director, CARZENX' },
     { name: 'Vishal Pandey', initials: 'VP', role: 'Director, CARZENX' },
-    { name: 'Arshia Naz', initials: 'AN', role: 'Director, CARZENX' },
-    { name: 'Faishal Malik', initials: 'FM', role: 'Director, CARZENX' },
   ],
 }
 

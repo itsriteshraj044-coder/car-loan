@@ -208,8 +208,8 @@ export default function Home() {
         <div className="wrap">
           <div className="stats rv" style={{ marginBottom: 'clamp(56px,8vw,96px)' }}>
             <div className="stat"><b>{years}<em>+</em></b><span>Years of pan-India car loans and distributorship, since {site.since}</span></div>
-            <div className="stat"><b>6</b><span>Finance and partnership services</span></div>
-            <div className="stat"><b>7<em> yrs</em></b><span>Longest indicative tenure, on new car loans</span></div>
+            <div className="stat"><b>1,000<em>+</em></b><span>Car dealers and DSAs already partnered with us</span></div>
+            <div className="stat"><b>7,000<em>+</em></b><span>Happy clients who got their car loan through us</span></div>
             <div className="stat"><b><em>Pan-</em>India</b><span>Buyers, dealers and distributors served</span></div>
           </div>
           <div className="kicker rv">Benefits</div>
