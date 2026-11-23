@@ -843,7 +843,7 @@ export const carModels: string[] = [
   "RENAULT TRIBER RXZ PETROL MT",
   "RENAULT TRIBER RXZ PETROL MT 1.0L ECE",
   "ROLLS ROYCE CULLINAN",
-  "ROLLS ROYCE ROLLS ROY GHOST S-II",
+  "ROLLS ROYCE GHOST S-II",
   "SKODA KAROQ STYLE 1.5 TSI AT",
   "SKODA KODIAQ L&K AT(110KW,TDI CR)",
   "SKODA KODIAQ SCOUT AT(110KW,TDI CR)",
@@ -1068,3 +1068,39 @@ export const carModels: string[] = [
   "VOLVO XC90 D5",
   "VOLVO XC90 T8 TWEN",
 ]
+
+/** Splits a raw "MAKE MODEL VARIANT" entry into its make and the model/variant text. */
+function splitMake(raw: string): [string, string] {
+  const s = raw.replace(/^KIACARNIVAL\s*/, 'KIA CARNIVAL ')
+  const rules: [RegExp, string][] = [
+    [/^JAGUAR LAND ROVER (LAND ROVER )?/, 'LAND ROVER'],
+    [/^MERCEDES-AMG /, 'MERCEDES-BENZ|AMG '],
+    [/^MERCEDES /, 'MERCEDES-BENZ'],
+    [/^ROLLS[- ]ROYCE /, 'ROLLS-ROYCE'],
+    [/^NISSAN DATSUN (DATSUN )?/, 'DATSUN'],
+    [/^VOLKSWAGEN (VW )?/, 'VOLKSWAGEN'],
+    [/^MARUTI (SUZUKI )?/, 'MARUTI SUZUKI'],
+  ]
+  for (const [re, make] of rules) {
+    if (re.test(s)) {
+      const [name, prefix = ''] = make.split('|')
+      return [name, prefix + s.replace(re, '').trim()]
+    }
+  }
+  const i = s.indexOf(' ')
+  return i < 0 ? [s, s] : [s.slice(0, i), s.slice(i + 1).trim()]
+}
+
+const byMake = new Map<string, string[]>()
+for (const raw of carModels) {
+  const [make, model] = splitMake(raw)
+  const list = byMake.get(make) ?? []
+  if (model && !list.includes(model)) list.push(model)
+  byMake.set(make, list)
+}
+
+/** All car makes, A–Z. */
+export const carMakes: string[] = [...byMake.keys()].sort()
+
+/** Models for a make (empty for an unknown make). */
+export const modelsFor = (make: string): string[] => byMake.get(make.trim().toUpperCase()) ?? []

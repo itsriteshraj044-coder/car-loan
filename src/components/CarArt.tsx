@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-/* Car artwork and animations from the CARZENX design files, ported to React. */
+/* Car artwork and animations from the Carzenx Pvt. Ltd. design files, ported to React. */
 
 const CAR_BODY =
   'M28 152C26 138 32 124 52 118C90 110 140 104 182 90C220 74 262 56 318 52C372 49 416 60 448 82C466 94 520 104 566 112C598 118 618 132 616 152Z'

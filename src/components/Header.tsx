@@ -50,7 +50,7 @@ export default function Header() {
     <>
       <header className={`hdr ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap hdr-in">
-          <Link to="/" className="logo" aria-label="CARZENX home">
+          <Link to="/" className="logo" aria-label="Carzenx Pvt. Ltd. home">
             <Logo />
           </Link>
           <nav className="nav" aria-label="Primary">

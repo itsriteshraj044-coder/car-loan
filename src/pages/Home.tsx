@@ -37,7 +37,7 @@ const tabs = {
   dealers: {
     label: 'For dealers',
     title: 'A finance desk on your showroom floor.',
-    text: 'Stop losing sales at the finance stage. Refer buyers to CARZENX and we route them to suitable lenders, keep your sales team updated and handle the paperwork after the sale.',
+    text: 'Stop losing sales at the finance stage. Refer buyers to Carzenx Pvt. Ltd. and we route them to suitable lenders, keep your sales team updated and handle the paperwork after the sale.',
     items: [
       { t: 'Ready buyers', d: 'Finance sorted while the customer is still keen.' },
       { t: 'New and used cars', d: 'Finance support across your inventory.' },
@@ -74,8 +74,8 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="CARZENX | Car Loan DSA Distributor in India Since 2017"
-        description="New car loans, used car loans, car refinance, BT top-up and RTO support. CARZENX connects car buyers and dealers with partner banks such as Axis Bank and ICICI Bank across India, since 2017."
+        title="Carzenx Pvt. Ltd. | Car Loan DSA Distributor in India Since 2017"
+        description="New car loans, used car loans, car refinance, BT top-up and RTO support. Carzenx Pvt. Ltd. connects car buyers and dealers with partner banks such as Axis Bank and ICICI Bank across India, since 2017."
         path="/"
       />
 
@@ -92,7 +92,7 @@ export default function Home() {
               <span className="ln"><span>Drive sooner.</span></span>
             </h1>
             <p className="hero-desc">
-              CARZENX connects car buyers, dealers and banks across India. One enquiry gets you matched with partner lenders for
+              Carzenx Pvt. Ltd. connects car buyers, dealers and banks across India. One enquiry gets you matched with partner lenders for
               new and used car loans, refinance and BT top-up, with documents and RTO work handled by one team.
             </p>
             <div className="hero-cta">
@@ -120,10 +120,10 @@ export default function Home() {
       <section className="sec sec-grey" aria-labelledby="ben-title">
         <div className="wrap">
           <SectionHead
-            kicker="Why CARZENX"
+            kicker="Why Carzenx Pvt. Ltd."
             id="ben-title"
             title={<>Every side of the car deal, <span className="hl">connected.</span></>}
-            lead="Buyers want the right loan, dealers want the sale closed and lenders want complete files. CARZENX sits in the middle and keeps all three moving."
+            lead="Buyers want the right loan, dealers want the sale closed and lenders want complete files. Carzenx Pvt. Ltd. sits in the middle and keeps all three moving."
             variant="split"
           />
           <div className="tiles">
@@ -166,7 +166,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What is CARZENX */}
+      {/* What is Carzenx Pvt. Ltd. */}
       <section className="sec" aria-labelledby="what-title">
         <div className="wrap what-grid">
           <div className="photo art rv">
@@ -174,10 +174,10 @@ export default function Home() {
             <div className="badge"><b>{site.since}</b><span>Pan-India car loan distribution</span></div>
           </div>
           <div>
-            <div className="kicker rv">What is CARZENX</div>
+            <div className="kicker rv">What is Carzenx Pvt. Ltd.</div>
             <h2 className="t-h1 rv" id="what-title">The bridge between your car and the right lender.</h2>
             <p className="t-lead rv" style={{ marginTop: 20 }}>
-              CARZENX is a car loan DSA distributor. We do not lend money and we do not borrow it. We understand what you
+              Carzenx Pvt. Ltd. is a car loan DSA distributor. We do not lend money and we do not borrow it. We understand what you
               need, find partner banks whose criteria fit, prepare a complete file and follow it through to disbursal and
               the RTO.
             </p>
@@ -266,7 +266,7 @@ export default function Home() {
             kicker="Our products"
             id="prod-title"
             title="Car finance for every stage of ownership."
-            lead="From the day you buy to the day you move your loan, there is a CARZENX product for it."
+            lead="From the day you buy to the day you move your loan, there is a Carzenx Pvt. Ltd. product for it."
             variant="split"
           />
           <div className="svc-grid">
@@ -291,7 +291,7 @@ export default function Home() {
         </div>
         <PartnerMarquee />
         <div className="wrap lg-foot rv">
-          <span>Lenders shown are part of the CARZENX lending partner network. Each lender decides its own eligibility and terms.</span>
+          <span>Lenders shown are part of the Carzenx Pvt. Ltd. lending partner network. Each lender decides its own eligibility and terms.</span>
           <Link to="/contact" className="lg-link">Are you a lender? Partner with us →</Link>
         </div>
       </section>
@@ -326,7 +326,7 @@ export default function Home() {
             <div className="kicker rv">Dealer partnership</div>
             <h2 className="t-h1 rv" id="dl-title">Grow your dealership with the right finance network.</h2>
             <p className="dl-p rv">
-              CARZENX works with new and used car dealers, distributors and business partners across India. You sell the car,
+              Carzenx Pvt. Ltd. works with new and used car dealers, distributors and business partners across India. You sell the car,
               we take care of the finance.
             </p>
             <div className="dl-cta rv">
@@ -376,7 +376,7 @@ export default function Home() {
             <div className="kicker rv">FAQ</div>
             <h2 className="t-h1 rv" id="faq-title">Questions, answered.</h2>
             <div className="note rv">
-              <b>Important:</b> CARZENX is a distributor and does not approve loans. The lender independently evaluates every
+              <b>Important:</b> Carzenx Pvt. Ltd. is a distributor and does not approve loans. The lender independently evaluates every
               application and sets the eligibility, interest rate, tenure and final terms.
             </div>
           </div>

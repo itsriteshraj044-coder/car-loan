@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="wrap">
         <div className="ftr-grid">
           <div>
-            <Link to="/" className="logo-pill" aria-label="CARZENX home">
+            <Link to="/" className="logo-pill" aria-label="Carzenx Pvt. Ltd. home">
               <Logo height={38} />
             </Link>
             <p>Connecting car buyers, dealers and lenders across India with dependable car loan distribution since {site.since}.</p>
@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
         <p className="ftr-disc">{disclosure}</p>
         <div className="ftr-bar">
-          <span>© {new Date().getFullYear()} CARZENX. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Carzenx Pvt. Ltd. All rights reserved.</span>
           <nav aria-label="Legal">
             <Link to="/privacy-policy">Privacy Policy</Link>
             <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>

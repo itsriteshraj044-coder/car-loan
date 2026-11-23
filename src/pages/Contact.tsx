@@ -7,13 +7,13 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Contact CARZENX | Car Loan Enquiries"
-        description={`Call ${site.phone.display} or email ${site.email.display} to discuss a new car loan, used car loan, refinance, BT top-up or dealer partnership with CARZENX.`}
+        title="Contact Carzenx Pvt. Ltd. | Car Loan Enquiries"
+        description={`Call ${site.phone.display} or email ${site.email.display} to discuss a new car loan, used car loan, refinance, BT top-up or dealer partnership with Carzenx Pvt. Ltd.`}
         path="/contact"
       />
       <PageHero
         crumbs={[{ label: 'Contact' }]}
-        title="Talk to the CARZENX team."
+        title="Talk to the Carzenx Pvt. Ltd. team."
         sub="Questions about a loan, a document or a partnership? Call, email or send an enquiry and we will get back to you."
       />
       <section className="sec sec-grey">
@@ -39,7 +39,7 @@ export default function Contact() {
               <span className="ic"><Clock size={22} aria-hidden="true" /></span>
               <span><small>Business hours</small><b>{site.hours}</b></span>
             </div>
-            <p className="warn rv"><b>Stay safe:</b> CARZENX will never ask for your card number, PIN, password or OTP.</p>
+            <p className="warn rv"><b>Stay safe:</b> Carzenx Pvt. Ltd. will never ask for your card number, PIN, password or OTP.</p>
           </div>
           <div className="rv">
             <h2 className="t-h2" style={{ marginBottom: 20 }}>Send an enquiry</h2>

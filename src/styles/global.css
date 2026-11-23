@@ -610,6 +610,8 @@ button { font: inherit; }
 .combo-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border: 0; background: transparent; color: var(--ink-2); display: grid; place-items: center; cursor: pointer; border-radius: 8px; }
 .combo-btn svg { transition: transform 0.2s; }
 .combo-btn.up svg { transform: rotate(180deg); }
+.combo input:disabled { opacity: 0.55; cursor: not-allowed; }
+.combo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .err { margin: 0; color: #c4101b; font-size: 12.5px; font-weight: 600; }
 .ck { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--ink-2); }
 .ck input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--blue); flex-shrink: 0; }

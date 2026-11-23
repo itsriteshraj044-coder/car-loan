@@ -4,7 +4,7 @@ import { Seo } from '../components/ui'
 export default function NotFound() {
   return (
     <section className="nf">
-      <Seo title="Page not found | CARZENX" description="The page you are looking for does not exist." path="/404" />
+      <Seo title="Page not found | Carzenx Pvt. Ltd." description="The page you are looking for does not exist." path="/404" />
       <div className="wrap">
         <p className="big" aria-hidden="true">404</p>
         <h1>Wrong turn.</h1>

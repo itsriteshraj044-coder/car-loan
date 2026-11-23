@@ -18,7 +18,7 @@ export const isPhone = (v: string) => /^[6-9]\d{9}$/.test(v.replace(/\D/g, '').r
 export const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)
 
 /**
- * Sends the enquiry by opening the visitor's email app with a prefilled message to CARZENX.
+ * Sends the enquiry by opening the visitor's email app with a prefilled message to Carzenx Pvt. Ltd.
  * The site is static hosting, so there is no server to post to. To capture leads on a server,
  * replace this function with a fetch() to your endpoint.
  */
@@ -27,7 +27,7 @@ export function sendLead(subject: string, rows: [string, string][]) {
     .filter(([, v]) => v)
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n')
-  window.location.href = mailto(subject, `${body}\n\nSent from the CARZENX website.`)
+  window.location.href = mailto(subject, `${body}\n\nSent from the Carzenx Pvt. Ltd. website.`)
 }
 
 export function useForm(initial: Values, validate: (v: Values) => Errors) {
@@ -140,6 +140,8 @@ export function SearchSelect({
   optional,
   placeholder,
   full,
+  disabled,
+  onPick,
 }: {
   f: F
   k: string
@@ -148,6 +150,9 @@ export function SearchSelect({
   optional?: boolean
   placeholder?: string
   full?: boolean
+  disabled?: boolean
+  /** Called whenever the chosen value changes (including when it is cleared by typing). */
+  onPick?: (value: string) => void
 }) {
   const err = f.errors[k]
   const [query, setQuery] = useState(f.values[k] ?? '')
@@ -178,12 +183,14 @@ export function SearchSelect({
     const val = item.startsWith(OTHER_PREFIX) ? item.slice(OTHER_PREFIX.length) : item
     setQuery(val)
     f.setField(k, val)
+    onPick?.(val)
     setTyped(false)
     setOpen(false)
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
+    if (f.values[k]) onPick?.('')
     f.setField(k, '')
     setTyped(true)
     setActive(0)
@@ -223,6 +230,7 @@ export function SearchSelect({
           autoComplete="off"
           value={query}
           placeholder={placeholder}
+          disabled={disabled}
           onChange={onChange}
           onKeyDown={onKey}
           onFocus={openList}
@@ -233,6 +241,7 @@ export function SearchSelect({
           type="button"
           className={`combo-btn ${open ? 'up' : ''}`}
           tabIndex={-1}
+          disabled={disabled}
           aria-label={open ? 'Close list' : 'Show all options'}
           onMouseDown={(e) => { e.preventDefault(); if (open) setOpen(false); else { inputRef.current?.focus(); openList() } }}
         >
@@ -271,7 +280,7 @@ export function Consent({ f }: { f: F }) {
     <div className={`ck ${err ? 'bad' : ''}`}>
       <input id="f-consent" type="checkbox" checked={f.values.consent === 'yes'} onChange={f.set('consent')} aria-invalid={!!err} aria-describedby={err ? 'e-consent' : undefined} />
       <label htmlFor="f-consent">
-        I agree to be contacted by CARZENX about this enquiry by phone, SMS, WhatsApp or email, and I accept the{' '}
+        I agree to be contacted by Carzenx Pvt. Ltd. about this enquiry by phone, SMS, WhatsApp or email, and I accept the{' '}
         <Link to="/privacy-policy">Privacy Policy</Link>.
         {err && <span className="err" id="e-consent" style={{ display: 'block', marginTop: 4 }}>{err}</span>}
       </label>

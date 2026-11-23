@@ -7,14 +7,14 @@ export default function About() {
   return (
     <>
       <Seo
-        title="About CARZENX | Car Loan DSA Distributor Since 2017"
-        description="CARZENX is a pan-India car loan DSA distributor, working since 2017 with buyers, dealers, distributors and banks. Meet our directors and learn how we work."
+        title="About Carzenx Pvt. Ltd. | Car Loan DSA Distributor Since 2017"
+        description="Carzenx Pvt. Ltd. is a pan-India car loan DSA distributor, working since 2017 with buyers, dealers, distributors and banks. Meet our directors and learn how we work."
         path="/about"
       />
       <PageHero
         crumbs={[{ label: 'About' }]}
         title="Making car finance simple, since 2017."
-        sub="CARZENX started with a simple idea: buying a car should not stall at the finance stage. Today we connect buyers, dealers and lending partners across India."
+        sub="Carzenx Pvt. Ltd. started with a simple idea: buying a car should not stall at the finance stage. Today we connect buyers, dealers and lending partners across India."
         image="drone-road"
         imageAlt="Aerial view of a road winding through Mumbai"
         chip={{ big: String(site.since), small: 'Working pan-India since' }}
@@ -35,7 +35,7 @@ export default function About() {
                 sales when finance falls through at the last step. Lenders receive incomplete files.
               </p>
               <p>
-                CARZENX was built to fix that middle step. As a Direct Selling Agent we work alongside buyers, dealers and
+                Carzenx Pvt. Ltd. was built to fix that middle step. As a Direct Selling Agent we work alongside buyers, dealers and
                 partner banks such as Axis Bank and ICICI Bank, preparing complete applications and following them through to
                 disbursal and the RTO.
               </p>
@@ -76,7 +76,7 @@ export default function About() {
           <SectionHead kicker="Clear roles" title="What we do, and what the lender does." variant="split" lead="Knowing who decides what avoids surprises later." />
           <div className="roles">
             <div className="role us rv">
-              <span className="tag b">CARZENX</span>
+              <span className="tag b">Carzenx Pvt. Ltd.</span>
               <h3>What we do</h3>
               <ul>
                 {['Understand your requirement and profile', 'Suggest suitable lending partners', 'Prepare and submit a complete application', 'Follow up until disbursal', 'Coordinate RTO formalities'].map((x) => (
@@ -99,7 +99,7 @@ export default function About() {
 
       <section className="sec">
         <div className="wrap">
-          <SectionHead kicker="Leadership" title="The people behind CARZENX." lead={`CARZENX is led by its directors, who have built and guided the business pan-India since ${site.since}.`} variant="split" />
+          <SectionHead kicker="Leadership" title="The people behind Carzenx Pvt. Ltd." lead={`Carzenx Pvt. Ltd. is led by its directors, who have built and guided the business pan-India since ${site.since}.`} variant="split" />
           <div className="people">
             {site.directors.map((d, i) => (
               <article className="person rv" key={d.name} style={{ transitionDelay: `${i * 0.08}s` }}>

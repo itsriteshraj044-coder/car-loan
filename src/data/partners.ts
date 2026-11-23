@@ -2,7 +2,7 @@
  * Lending partner logos for the partner marquee.
  *
  * Set `live` to false for any lender that should be hidden from the site.
- * Showing a lender's logo tells customers CARZENX works with that lender.
+ * Showing a lender's logo tells customers Carzenx Pvt. Ltd. works with that lender.
  * Logo files live in /public/images/partners/.
  */
 export interface Partner {

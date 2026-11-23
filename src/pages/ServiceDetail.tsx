@@ -15,8 +15,8 @@ export default function ServiceDetail() {
   return (
     <>
       <Seo
-        title={`${s.title} | CARZENX`}
-        description={`${s.short} CARZENX connects you with partner banks such as Axis Bank and ICICI Bank.`}
+        title={`${s.title} | Carzenx Pvt. Ltd.`}
+        description={`${s.short} Carzenx Pvt. Ltd. connects you with partner banks such as Axis Bank and ICICI Bank.`}
         path={`/services/${s.id}`}
       />
       <PageHero
@@ -38,7 +38,7 @@ export default function ServiceDetail() {
           <div>
             <div className="block">
               <div className="kicker rv">Overview</div>
-              <h2 className="t-h2 rv">How CARZENX helps</h2>
+              <h2 className="t-h2 rv">How Carzenx Pvt. Ltd. helps</h2>
               <div className="prose-p rv"><p>{s.intro}</p></div>
               <ul className="check rv" style={{ marginTop: 24 }}>
                 {s.includes.map((x) => (
@@ -99,7 +99,7 @@ export default function ServiceDetail() {
               <Link to={`/apply?loan=${s.id}`} className="btn btn-blue">Apply now</Link>
               <a href={site.phone.href} className="btn btn-ghost">{site.phone.display}</a>
             </div>
-            <p className="warn"><b>Note:</b> CARZENX is a DSA, not a lender. Approval, rate and terms are decided by the lender.</p>
+            <p className="warn"><b>Note:</b> Carzenx Pvt. Ltd. is a DSA, not a lender. Approval, rate and terms are decided by the lender.</p>
           </aside>
         </div>
       </section>

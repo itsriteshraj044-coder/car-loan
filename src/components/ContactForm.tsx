@@ -1,7 +1,7 @@
 import { useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { ArrowLeftRight, CarFront, Gauge, UserPlus } from 'lucide-react'
 import { Consent, Field, SearchSelect, Select, Thanks, isPhone, sendLead, useForm, type Values } from './forms'
-import { carModels } from '../data/carModels'
+import { carMakes, modelsFor } from '../data/carModels'
 
 type F = ReturnType<typeof useForm>
 
@@ -101,14 +101,15 @@ export function regError(v: Values, required: boolean) {
 }
 
 export default function ContactForm() {
-  const initial: Values = { need: '', name: '', phone: '', car: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', message: '', consent: '', website: '' }
+  const initial: Values = { need: '', name: '', phone: '', make: '', model: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', message: '', consent: '', website: '' }
   const f = useForm(initial, (v) => {
     const isNew = v.need === 'New car' || v.year.includes('New')
     return {
       need: !v.need ? 'Choose what you need.' : '',
       name: v.name.trim().length < 2 ? 'Please enter your full name.' : '',
       phone: !isPhone(v.phone) ? 'Enter a valid 10-digit Indian mobile number.' : '',
-      car: v.need !== 'Reference' && v.car.trim().length < 2 ? 'Search and choose your car make / model.' : '',
+      make: v.need !== 'Reference' && !v.make.trim() ? 'Choose the car make.' : '',
+      model: v.need !== 'Reference' && v.model.trim().length < 1 ? 'Choose the car model.' : '',
       year: v.need !== 'Reference' && !v.year ? 'Choose the year.' : '',
       regState: v.need !== 'Reference' && !v.regState ? 'Choose the registration state.' : '',
       r1: v.need === 'Reference' ? '' : regError(v, !isNew),
@@ -129,7 +130,8 @@ export default function ContactForm() {
       ['Requirement', v.need],
       ['Full name', v.name],
       ['Phone', v.phone],
-      ['Make / model', v.car],
+      ['Make', v.make],
+      ['Model', v.model],
       ['Year', v.year],
       ['Registration state', v.regState],
       ['Registration number', regNumber(v)],
@@ -173,7 +175,8 @@ export default function ContactForm() {
 
         {!isRef && (
           <>
-            <SearchSelect f={f} k="car" label="Make / model" options={carModels} placeholder="Select or type to search" />
+            <SearchSelect f={f} k="make" label="Make" options={carMakes} placeholder="Select or type to search" onPick={() => f.setField('model', '')} />
+            <SearchSelect key={`model-${v.make}`} f={f} k="model" label="Model" options={modelsFor(v.make)} placeholder={v.make ? 'Select or type to search' : 'Select a make first'} disabled={!v.make} />
             <Select f={f} k="year" label="Year" options={years} />
             <RegFields f={f} optional={isNew} />
           </>

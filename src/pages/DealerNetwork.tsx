@@ -25,8 +25,8 @@ export default function DealerNetwork() {
   return (
     <>
       <Seo
-        title="Dealer & Distributorship Partnership | CARZENX"
-        description="Partner with CARZENX: a finance desk for new and used car dealers and pan-India distributorship opportunities, connecting your buyers with partner banks."
+        title="Dealer & Distributorship Partnership | Carzenx Pvt. Ltd."
+        description="Partner with Carzenx Pvt. Ltd.: a finance desk for new and used car dealers and pan-India distributorship opportunities, connecting your buyers with partner banks."
         path="/dealer-network"
       />
       <PageHero
@@ -45,7 +45,7 @@ export default function DealerNetwork() {
 
       <section className="sec sec-grey">
         <div className="wrap">
-          <SectionHead kicker="Partner benefits" title="What you get as a CARZENX partner." variant="split" lead="You focus on selling cars. We take the finance work off your plate." />
+          <SectionHead kicker="Partner benefits" title="What you get as a Carzenx Pvt. Ltd. partner." variant="split" lead="You focus on selling cars. We take the finance work off your plate." />
           <div className="tiles three">
             {perks.map((p, i) => {
               const Icon = p.i
@@ -95,7 +95,7 @@ export default function DealerNetwork() {
               {s.includes.map((x) => <li key={x}><Check size={20} aria-hidden="true" />{x}</li>)}
             </ul>
             <div className="rv"><Faq items={s.faqs} idPrefix="dq" /></div>
-            <p className="warn rv" style={{ marginTop: 24 }}>Partnerships are subject to onboarding and agreement. CARZENX does not guarantee earnings, volumes or outcomes.</p>
+            <p className="warn rv" style={{ marginTop: 24 }}>Partnerships are subject to onboarding and agreement. Carzenx Pvt. Ltd. does not guarantee earnings, volumes or outcomes.</p>
           </div>
           <div className="rv"><EnquiryForm variant="partner" /></div>
         </div>

@@ -36,7 +36,7 @@ const income = {
 }
 
 /**
- * CARZENX loan products. CARZENX assists, prepares and routes applications;
+ * Carzenx Pvt. Ltd. loan products. Carzenx Pvt. Ltd. assists, prepares and routes applications;
  * the lending partner approves, prices and disburses. Tenures are indicative.
  */
 export const services: Service[] = [
@@ -185,7 +185,7 @@ export const services: Service[] = [
     intro:
       'A car loan is only half the job: the RTO records have to follow. Alongside your loan we coordinate registration, ownership transfer and hypothecation entries, so the loan and the vehicle records stay in step. The RTO makes all final decisions and sets official fees.',
     tenure: 'Alongside your loan',
-    bestFor: 'Anyone taking a CARZENX-assisted loan who wants the RTO work coordinated',
+    bestFor: 'Anyone taking a loan assisted by Carzenx Pvt. Ltd. who wants the RTO work coordinated',
     tags: ['Registration', 'Transfer', 'Hypothecation'],
     includes: [
       'New registration support',
@@ -212,11 +212,11 @@ export const services: Service[] = [
     index: '06',
     icon: Network,
     title: 'Dealer & Distributorship',
-    nav: 'Partner with CARZENX',
+    nav: 'Partner with Carzenx Pvt. Ltd.',
     short: 'Pan-India distributorship and a finance desk for dealers, connecting your buyers to banks.',
     headline: 'Close more car sales with finance on your side.',
     intro:
-      'Since 2017 CARZENX has worked pan-India with dealers, distributors and banks. We act as a finance desk for dealerships and offer distributorship to business partners, helping your customers reach suitable lenders and keeping your sales team informed.',
+      'Since 2017 Carzenx Pvt. Ltd. has worked pan-India with dealers, distributors and banks. We act as a finance desk for dealerships and offer distributorship to business partners, helping your customers reach suitable lenders and keeping your sales team informed.',
     tenure: 'Partnership',
     bestFor: 'New and used car dealers, DSAs and business partners',
     tags: ['Pan-India', 'Dealers & partners'],

@@ -11,7 +11,7 @@ export default function Legal({ doc }: { doc: LegalKey }) {
   const d = legal[doc]
   return (
     <>
-      <Seo title={`${d.title} | CARZENX`} description={`${d.title} for the CARZENX website and car loan DSA services.`} path={paths[doc]} />
+      <Seo title={`${d.title} | Carzenx Pvt. Ltd.`} description={`${d.title} for the Carzenx Pvt. Ltd. website and car loan DSA services.`} path={paths[doc]} />
       <PageHero crumbs={[{ label: d.title }]} title={d.title} />
       <section className="sec">
         <div className="wrap">

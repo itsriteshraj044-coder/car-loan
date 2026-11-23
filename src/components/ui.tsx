@@ -28,7 +28,7 @@ export function Logo({ height = 44 }: { height?: number }) {
       src="/images/carzenx-logo-720.png"
       srcSet="/images/carzenx-logo-720.png 720w, /images/carzenx-logo.png 1479w"
       sizes={`${Math.round(height * 4.24)}px`}
-      alt="CARZENX — Car Loan DSA Distributor"
+      alt="Carzenx Pvt. Ltd. — Car Loan DSA Distributor"
       width={720}
       height={170}
       style={{ height, width: 'auto' }}
@@ -232,7 +232,7 @@ export function Faq({ items, idPrefix = 'q' }: { items: { q: string; a: string }
 /* ---------- Closing call to action ---------- */
 export function CtaBand({
   title = 'Your next car starts with the right finance conversation.',
-  text = 'Whether you are buying a car or building an automotive business, talk to CARZENX and find the right way forward.',
+  text = 'Whether you are buying a car or building an automotive business, talk to Carzenx Pvt. Ltd. and find the right way forward.',
 }: {
   title?: string
   text?: string

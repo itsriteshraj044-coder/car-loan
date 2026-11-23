@@ -6,14 +6,14 @@ import { site } from '../data/site'
 import { Consent, Field, SearchSelect, Select, Thanks, isEmail, isPhone, sendLead, states, useForm, type Values } from '../components/forms'
 import { PageHero, Seo } from '../components/ui'
 import { RegFields, regError, regNumber, years } from '../components/ContactForm'
-import { carModels } from '../data/carModels'
+import { carMakes, modelsFor } from '../data/carModels'
 
 const employment = ['Salaried', 'Self-employed professional', 'Self-employed business owner', 'Other']
 const stepNames = ['Requirement', 'Car & loan', 'Your details']
 
 const fieldsByStep: Record<number, string[]> = {
   0: ['loan'],
-  1: ['car', 'year', 'regState', 'r1', 'amount', 'lender', 'employment', 'message'],
+  1: ['make', 'model', 'year', 'regState', 'r1', 'amount', 'lender', 'employment', 'message'],
   2: ['name', 'phone', 'email', 'city', 'state', 'consent'],
 }
 
@@ -22,7 +22,7 @@ export default function Apply() {
   const pre = findService(params.get('loan') ?? '')
   const initial: Values = {
     loan: pre && pre.id !== 'dealer-distributorship' ? pre.id : '',
-    car: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', amount: '', lender: '', employment: '', income: '', message: '',
+    make: '', model: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', amount: '', lender: '', employment: '', income: '', message: '',
     name: '', phone: '', email: '', city: '', state: '', consent: '', website: '',
   }
   const f = useForm(initial, (v) => {
@@ -30,7 +30,8 @@ export default function Apply() {
     const isNew = v.loan === 'new-car-loan' || v.year.includes('New')
     return {
       loan: !v.loan ? 'Choose what you need.' : '',
-      car: !ref && v.loan !== 'loan-rto-services' && v.car.trim().length < 2 ? 'Search and choose your car make / model.' : '',
+      make: !ref && v.loan !== 'loan-rto-services' && !v.make.trim() ? 'Choose the car make.' : '',
+      model: !ref && v.loan !== 'loan-rto-services' && v.model.trim().length < 1 ? 'Choose the car model.' : '',
       year: !ref && !v.year ? 'Choose the year.' : '',
       regState: !ref && !v.regState ? 'Choose the registration state.' : '',
       r1: ref ? '' : regError(v, !isNew),
@@ -67,7 +68,8 @@ export default function Apply() {
     sendLead(`${isRef ? 'Reference' : 'Loan enquiry'}: ${title} - ${v.name}`, [
       ['Requirement', title],
       ['Referring', v.message],
-      ['Make / model', v.car],
+      ['Make', v.make],
+      ['Model', v.model],
       ['Year', v.year],
       ['Registration state', v.regState],
       ['Registration number', regNumber(v)],
@@ -87,8 +89,8 @@ export default function Apply() {
   return (
     <>
       <Seo
-        title="Apply for a Car Loan | CARZENX"
-        description="Apply for a new car loan, used car loan, refinance, BT top-up or Loan + RTO services with CARZENX. Takes about two minutes."
+        title="Apply for a Car Loan | Carzenx Pvt. Ltd."
+        description="Apply for a new car loan, used car loan, refinance, BT top-up or Loan + RTO services with Carzenx Pvt. Ltd. Takes about two minutes."
         path="/apply"
       />
       <PageHero
@@ -146,7 +148,7 @@ export default function Apply() {
                     <Link to="/dealer-network#partner-form">
                       <Network size={24} aria-hidden="true" />
                       <b>Are you a dealer?</b>
-                      <small>Become a CARZENX partner →</small>
+                      <small>Become a Carzenx Pvt. Ltd. partner →</small>
                     </Link>
                   </div>
                   {f.errors.loan && <p className="err" style={{ marginTop: 12 }}>{f.errors.loan}</p>}
@@ -161,7 +163,8 @@ export default function Apply() {
                       <Field f={f} k="message" label="Customer details" type="textarea" full placeholder="Name, phone number, city and what they need" />
                     ) : (
                       <>
-                        <SearchSelect f={f} k="car" label="Make / model" options={carModels} placeholder="Select or type to search" optional={v.loan === 'loan-rto-services'} />
+                        <SearchSelect f={f} k="make" label="Make" options={carMakes} placeholder="Select or type to search" optional={v.loan === 'loan-rto-services'} onPick={() => f.setField('model', '')} />
+                        <SearchSelect key={`model-${v.make}`} f={f} k="model" label="Model" options={modelsFor(v.make)} placeholder={v.make ? 'Select or type to search' : 'Select a make first'} disabled={!v.make} optional={v.loan === 'loan-rto-services'} />
                         <Select f={f} k="year" label="Year" options={years} />
                         <RegFields f={f} optional={v.loan === 'new-car-loan' || v.year.includes('New')} />
                         <Field
@@ -209,7 +212,7 @@ export default function Apply() {
                 </button>
               </div>
               <p className="t-small" style={{ marginTop: 20 }}>
-                CARZENX is a DSA, not a lender. Submitting this form does not guarantee a loan; the lender decides approval and terms.
+                Carzenx Pvt. Ltd. is a DSA, not a lender. Submitting this form does not guarantee a loan; the lender decides approval and terms.
               </p>
             </form>
           )}

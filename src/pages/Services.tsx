@@ -7,8 +7,8 @@ export default function Services() {
   return (
     <>
       <Seo
-        title="Car Loan Products | New, Used, Refinance, BT Top-up | CARZENX"
-        description="Compare CARZENX car finance products: new car loans (5–7 years), used car loans (5–6 years), car refinance, BT top-up, Loan + RTO services and dealer distributorship."
+        title="Car Loan Products | New, Used, Refinance, BT Top-up | Carzenx Pvt. Ltd."
+        description="Compare Carzenx Pvt. Ltd. car finance products: new car loans (5–7 years), used car loans (5–6 years), car refinance, BT top-up, Loan + RTO services and dealer distributorship."
         path="/services"
       />
       <PageHero
