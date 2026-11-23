@@ -1,6 +1,6 @@
-import { useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { Check } from 'lucide-react'
+import { Check, ChevronDown } from 'lucide-react'
 import { mailto, site } from '../data/site'
 
 export const states = [
@@ -39,6 +39,11 @@ export function useForm(initial: Values, validate: (v: Values) => Errors) {
     setValues((s) => ({ ...s, [k]: v }))
     if (errors[k]) setErrors((s) => ({ ...s, [k]: '' }))
   }
+  /** Set one value directly (for custom inputs) and clear its error. */
+  const setField = (k: string, v: string) => {
+    setValues((s) => ({ ...s, [k]: v }))
+    if (v && errors[k]) setErrors((s) => ({ ...s, [k]: '' }))
+  }
   const check = (keys?: string[]) => {
     const all = validate(values)
     const found: Errors = {}
@@ -50,7 +55,7 @@ export function useForm(initial: Values, validate: (v: Values) => Errors) {
     if (first) document.getElementById(`f-${first}`)?.focus()
     return !first
   }
-  return { values, setValues, errors, set, check }
+  return { values, setValues, errors, set, setField, check }
 }
 
 type F = ReturnType<typeof useForm>
@@ -120,6 +125,145 @@ export function Select({ f, k, label, options, full, optional }: { f: F; k: stri
     </div>
   )
 }
+
+
+/**
+ * Searchable dropdown. Opening it shows the full list; typing filters it. Every typed word must appear
+ * in the option (so "swift vxi" finds "MARUTI SWIFT VXI"). If the car is not listed, the visitor can
+ * keep what they typed via the last option.
+ */
+export function SearchSelect({
+  f,
+  k,
+  label,
+  options,
+  optional,
+  placeholder,
+  full,
+}: {
+  f: F
+  k: string
+  label: string
+  options: string[]
+  optional?: boolean
+  placeholder?: string
+  full?: boolean
+}) {
+  const err = f.errors[k]
+  const [query, setQuery] = useState(f.values[k] ?? '')
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const [typed, setTyped] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
+
+  const q = query.trim().toUpperCase()
+  const filtering = typed && q.length > 0
+  const matches = useMemo(() => {
+    if (!filtering) return options
+    const words = q.split(/\s+/)
+    return options.filter((o) => words.every((w) => o.includes(w)))
+  }, [q, filtering, options])
+  const exact = matches.some((m) => m === q)
+  const items = filtering && !exact ? [...matches, `${OTHER_PREFIX}${query.trim()}`] : matches
+
+  const openList = () => {
+    setTyped(false)
+    const sel = options.indexOf(f.values[k] ?? '')
+    setActive(sel >= 0 ? sel : 0)
+    setOpen(true)
+  }
+
+  const choose = (item: string) => {
+    const val = item.startsWith(OTHER_PREFIX) ? item.slice(OTHER_PREFIX.length) : item
+    setQuery(val)
+    f.setField(k, val)
+    setTyped(false)
+    setOpen(false)
+  }
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+    f.setField(k, '')
+    setTyped(true)
+    setActive(0)
+    setOpen(true)
+  }
+
+  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown' && !open) { e.preventDefault(); openList() }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); setActive((a) => Math.min(a + 1, items.length - 1)) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((a) => Math.max(a - 1, 0)) }
+    else if (e.key === 'Enter' && open && items[active]) { e.preventDefault(); choose(items[active]) }
+    else if (e.key === 'Escape') setOpen(false)
+  }
+
+  useEffect(() => {
+    if (open) listRef.current?.children[active]?.scrollIntoView({ block: 'nearest' })
+  }, [active, open])
+
+  const id = `f-${k}`
+  return (
+    <div className={`fld ${full ? 'full' : ''} ${err ? 'bad' : ''}`}>
+      <label htmlFor={id}>
+        {label} {optional && <span className="opt">(optional)</span>}
+      </label>
+      <div className="combo">
+        <input
+          ref={inputRef}
+          id={id}
+          name={k}
+          role="combobox"
+          aria-expanded={open}
+          aria-controls={`${id}-list`}
+          aria-autocomplete="list"
+          aria-activedescendant={open && items[active] ? `${id}-o${active}` : undefined}
+          aria-invalid={!!err}
+          aria-describedby={err ? `e-${k}` : undefined}
+          autoComplete="off"
+          value={query}
+          placeholder={placeholder}
+          onChange={onChange}
+          onKeyDown={onKey}
+          onFocus={openList}
+          onClick={() => { if (!open) openList() }}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+        />
+        <button
+          type="button"
+          className={`combo-btn ${open ? 'up' : ''}`}
+          tabIndex={-1}
+          aria-label={open ? 'Close list' : 'Show all options'}
+          onMouseDown={(e) => { e.preventDefault(); if (open) setOpen(false); else { inputRef.current?.focus(); openList() } }}
+        >
+          <ChevronDown size={18} aria-hidden="true" />
+        </button>
+        {open && (
+          <ul className="combo-list" id={`${id}-list`} role="listbox" ref={listRef}>
+            {items.map((item, i) => {
+                const other = item.startsWith(OTHER_PREFIX)
+                return (
+                  <li
+                    key={item}
+                    id={`${id}-o${i}`}
+                    role="option"
+                    aria-selected={i === active}
+                    className={`${i === active ? 'on' : ''} ${other ? 'other' : ''}`}
+                    onMouseDown={(e) => { e.preventDefault(); choose(item) }}
+                    onMouseEnter={() => setActive(i)}
+                  >
+                    {other ? <>Not in list? Use “<b>{item.slice(OTHER_PREFIX.length)}</b>”</> : item}
+                  </li>
+                )
+              })}
+          </ul>
+        )}
+      </div>
+      {err && <p className="err" id={`e-${k}`}>{err}</p>}
+    </div>
+  )
+}
+const OTHER_PREFIX = '\u0000other:'
 
 export function Consent({ f }: { f: F }) {
   const err = f.errors.consent

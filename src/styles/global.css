@@ -601,6 +601,15 @@ button { font: inherit; }
 .fld textarea { min-height: 120px; resize: vertical; }
 .fld input:focus, .fld select:focus, .fld textarea:focus { outline: 0; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 4px rgba(18, 72, 255, 0.12); }
 .fld.bad input, .fld.bad select, .fld.bad textarea { border-color: var(--red); background: #fff; }
+.combo { position: relative; }
+.combo-list { position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 6px); max-height: 280px; overflow-y: auto; margin: 0; padding: 6px; list-style: none; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 24px 48px -24px rgba(7, 9, 15, 0.4); }
+.combo-list li { padding: 10px 12px; border-radius: 8px; font-size: 14.5px; cursor: pointer; line-height: 1.35; }
+.combo-list li.on { background: rgba(18, 72, 255, 0.08); color: var(--blue); }
+.combo-list li.other { border-top: 1px solid var(--line); margin-top: 4px; color: var(--ink-2); }
+.combo input { padding-right: 44px; }
+.combo-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border: 0; background: transparent; color: var(--ink-2); display: grid; place-items: center; cursor: pointer; border-radius: 8px; }
+.combo-btn svg { transition: transform 0.2s; }
+.combo-btn.up svg { transform: rotate(180deg); }
 .err { margin: 0; color: #c4101b; font-size: 12.5px; font-weight: 600; }
 .ck { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--ink-2); }
 .ck input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--blue); flex-shrink: 0; }

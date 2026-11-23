@@ -3,9 +3,10 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { Clock, Lock, Network, ShieldCheck, UserPlus } from 'lucide-react'
 import { loanServices, findService } from '../data/services'
 import { site } from '../data/site'
-import { Consent, Field, Select, Thanks, isEmail, isPhone, sendLead, states, useForm, type Values } from '../components/forms'
+import { Consent, Field, SearchSelect, Select, Thanks, isEmail, isPhone, sendLead, states, useForm, type Values } from '../components/forms'
 import { PageHero, Seo } from '../components/ui'
 import { RegFields, regError, regNumber, years } from '../components/ContactForm'
+import { carModels } from '../data/carModels'
 
 const employment = ['Salaried', 'Self-employed professional', 'Self-employed business owner', 'Other']
 const stepNames = ['Requirement', 'Car & loan', 'Your details']
@@ -29,7 +30,7 @@ export default function Apply() {
     const isNew = v.loan === 'new-car-loan' || v.year.includes('New')
     return {
       loan: !v.loan ? 'Choose what you need.' : '',
-      car: !ref && v.loan !== 'loan-rto-services' && v.car.trim().length < 2 ? 'Enter the car make and model.' : '',
+      car: !ref && v.loan !== 'loan-rto-services' && v.car.trim().length < 2 ? 'Search and choose your car make / model.' : '',
       year: !ref && !v.year ? 'Choose the year.' : '',
       regState: !ref && !v.regState ? 'Choose the registration state.' : '',
       r1: ref ? '' : regError(v, !isNew),
@@ -160,7 +161,7 @@ export default function Apply() {
                       <Field f={f} k="message" label="Customer details" type="textarea" full placeholder="Name, phone number, city and what they need" />
                     ) : (
                       <>
-                        <Field f={f} k="car" label="Make / model" placeholder="e.g. Maruti Suzuki Brezza" optional={v.loan === 'loan-rto-services'} />
+                        <SearchSelect f={f} k="car" label="Make / model" options={carModels} placeholder="Select or type to search" optional={v.loan === 'loan-rto-services'} />
                         <Select f={f} k="year" label="Year" options={years} />
                         <RegFields f={f} optional={v.loan === 'new-car-loan' || v.year.includes('New')} />
                         <Field
