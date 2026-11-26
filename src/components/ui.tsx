@@ -104,6 +104,7 @@ export function PageHero({
   children,
   image,
   imageAlt,
+  banner,
   chip,
 }: {
   crumbs: { label: string; to?: string }[]
@@ -112,6 +113,8 @@ export function PageHero({
   children?: ReactNode
   image?: string
   imageAlt?: string
+  /** Square artwork with its own text: shown whole, without the photo crop and bottom shade. */
+  banner?: boolean
   chip?: { big: string; small: string }
 }) {
   return (
@@ -132,7 +135,7 @@ export function PageHero({
           {children}
         </div>
         {image && (
-          <div className="ph-media">
+          <div className={banner ? 'ph-media banner' : 'ph-media'}>
             <Img name={image} alt={imageAlt ?? ''} sizes="(max-width: 900px) 100vw, 45vw" eager />
             {chip && (
               <div className="ph-chip">

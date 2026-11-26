@@ -6,7 +6,7 @@ export const site = {
   since: 2017,
   description:
     'Carzenx Pvt. Ltd. is a pan-India car loan DSA distributor, working since 2017, connecting car buyers, dealers and distributors with banks such as Axis Bank and ICICI Bank for new car, used car, refinance and BT top-up loans, along with RTO support.',
-  phone: { display: '+91 91525 28886', href: 'tel:+919152528886' },
+  phone: { display: '+91 91525 28866', href: 'tel:+919152528866' },
   email: { display: 'support@carzenx.in', href: 'mailto:support@carzenx.in' },
   info: { display: 'info@carzenx.in', href: 'mailto:info@carzenx.in' },
   office: 'Head branch: Mumbai, Maharashtra',

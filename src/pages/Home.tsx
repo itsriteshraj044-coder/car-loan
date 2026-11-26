@@ -9,8 +9,9 @@ import { homeFaqs } from '../data/faqs'
 import { site } from '../data/site'
 import EmiCalculator from '../components/EmiCalculator'
 import PartnerMarquee from '../components/PartnerMarquee'
-import { CarDefs, DealerArt, GaugeArt, HeroBg, HeroCar, NetworkArt, ShowroomArt } from '../components/CarArt'
+import { CarDefs, DealerArt, GaugeArt, HeroBg, HeroCar, IndiaMapArt, ShowroomArt } from '../components/CarArt'
 import { CtaBand, Faq, SectionHead, Seo, ServiceCard, Steps } from '../components/ui'
+import { useEngineRev } from '../hooks/useEngineRev'
 
 const benefits = [
   { icon: Landmark, t: 'Access to credit', d: 'Reach partner banks such as Axis Bank and ICICI Bank through one application.', tags: ['Buyers', 'Dealers'] },
@@ -68,6 +69,7 @@ const howSteps = [
 
 export default function Home() {
   const [tab, setTab] = useState<TabKey>('buyers')
+  const rev = useEngineRev()
   const t = tabs[tab]
   const years = new Date().getFullYear() - site.since
 
@@ -348,16 +350,16 @@ export default function Home() {
           <SectionHead kicker="Who we serve" id="serve-title" title="Buying a car, or selling them?" />
           <div className="srv">
             <article className="pn gauge rv">
-              <GaugeArt />
+              <GaugeArt needleRef={rev.needleRef} arcRef={rev.arcRef} />
               <div className="pn-c">
                 <div className="pn-tag">INDIVIDUALS</div>
                 <h3>For car buyers</h3>
                 <p>New car loans, used car finance, refinance and BT top-up, with the paperwork and RTO handled.</p>
-                <Link to="/apply" className="btn btn-blue btn-lg">Apply for a car loan <span className="arr">→</span></Link>
+                <Link to="/apply" className="btn btn-blue btn-lg" {...rev.bind}>Apply for a car loan <span className="arr">→</span></Link>
               </div>
             </article>
             <article className="pn net rv" style={{ transitionDelay: '.12s' }}>
-              <NetworkArt />
+              <IndiaMapArt />
               <div className="pn-c">
                 <div className="pn-tag">BUSINESSES</div>
                 <h3>For dealers &amp; distributors</h3>

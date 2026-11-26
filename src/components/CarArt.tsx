@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, type Ref } from 'react'
 
 /* Car artwork and animations from the Carzenx Pvt. Ltd. design files, ported to React. */
 
@@ -201,37 +201,169 @@ export function DealerArt() {
 }
 
 /** Speedometer with a sweeping needle (buyers panel). */
-export function GaugeArt() {
+export function GaugeArt({
+  needleRef,
+  arcRef,
+}: {
+  needleRef?: Ref<SVGGElement>
+  arcRef?: Ref<SVGPathElement>
+}) {
   return (
     <svg className="pn-bg" viewBox="0 0 600 520" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
       <g transform="translate(300 175)">
         <circle r="132" fill="#070b1c" fillOpacity=".6" stroke="#9DB4FF" strokeOpacity=".35" strokeWidth="2" />
         <path d="M-80 80A113 113 0 1 1 80 80" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="14" strokeDasharray="2 10.5" />
-        <path d="M-80 80A113 113 0 1 1 80 80" fill="none" stroke="#1248FF" strokeWidth="6" strokeLinecap="round" strokeDasharray="372 700" />
+        <path ref={arcRef} d="M-80 80A113 113 0 1 1 80 80" fill="none" stroke="#1248FF" strokeWidth="6" strokeLinecap="round" strokeDasharray="532 800" strokeDashoffset="532" />
         <circle r="70" fill="none" stroke="#9DB4FF" strokeOpacity=".18" />
-        <line className="needle" x1="0" y1="0" x2="77" y2="-56" stroke="#FF1825" strokeWidth="4" strokeLinecap="round" />
+        <g ref={needleRef}>
+          <line x1="0" y1="0" x2="-67.3" y2="67.3" stroke="#FF1825" strokeWidth="4" strokeLinecap="round" />
+        </g>
         <circle r="11" fill="#07090F" stroke="#fff" strokeWidth="2" />
       </g>
     </svg>
   )
 }
 
-/** Hub-and-spoke dealer network (businesses panel). */
-export function NetworkArt() {
+/* ---------- India network map (businesses panel) ---------- */
+
+/** Simplified India outline as [longitude, latitude]; drawn as a dot matrix, so small errors don't show. */
+const INDIA: [number, number][] = [
+  [68.2, 23.7], [68.8, 24.3], [70.0, 24.6], [71.0, 24.5], [70.6, 25.7], [70.1, 26.6], [69.5, 27.1], [70.6, 28.0],
+  [71.9, 27.9], [73.0, 29.2], [73.9, 30.2], [74.6, 31.0], [74.6, 32.0], [75.3, 32.3], [74.5, 32.8], [74.0, 33.4],
+  [73.6, 34.3], [72.6, 35.4], [72.8, 36.5], [74.6, 37.0], [75.8, 36.7], [77.8, 35.6], [79.4, 35.6], [80.3, 35.3],
+  [79.6, 34.2], [78.9, 33.3], [78.6, 32.4], [79.0, 31.3], [80.2, 30.6], [81.0, 30.1], [80.1, 28.8], [81.3, 28.1],
+  [82.9, 27.4], [84.6, 27.3], [86.0, 26.6], [88.1, 26.4], [88.1, 27.4], [88.6, 28.1], [88.9, 27.3], [89.0, 26.9],
+  [92.0, 26.9], [92.0, 27.8], [93.5, 28.6], [95.4, 29.3], [96.5, 29.0], [97.3, 28.2], [97.0, 27.2], [95.2, 26.6],
+  [94.6, 25.2], [94.2, 23.9], [93.4, 23.0], [93.2, 22.2], [92.6, 21.9], [92.25, 22.9], [91.8, 22.9], [91.2, 23.6],
+  [91.6, 24.2], [92.2, 24.5], [92.3, 25.1], [89.9, 25.2], [89.8, 26.0], [88.4, 26.3], [88.1, 25.8], [88.7, 24.3],
+  [88.0, 23.9], [88.9, 23.2], [89.0, 22.0], [88.0, 21.6], [87.0, 21.5], [86.5, 20.4], [85.0, 19.3], [84.0, 18.2],
+  [82.3, 16.6], [81.2, 16.1], [80.2, 15.2], [80.3, 13.4], [79.8, 11.6], [79.8, 10.3], [78.9, 9.2], [78.2, 8.9],
+  [77.5, 8.1], [76.6, 8.9], [76.2, 10.0], [75.8, 11.5], [75.0, 12.8], [74.6, 14.0], [73.8, 15.6], [73.4, 16.8],
+  [72.9, 18.9], [72.8, 20.5], [72.6, 21.4], [72.6, 22.2], [72.2, 21.6], [71.0, 20.8], [70.0, 21.0], [69.0, 22.3],
+  [70.4, 22.8], [69.5, 23.0], [68.4, 23.3],
+]
+
+/**
+ * Equirectangular projection into the 600×520 panel (≈ cos 22° horizontal squash).
+ * Sized so the whole map, Kanyakumari included, ends above the panel text in the 600px-tall panel.
+ */
+const LAT_SCALE = 11
+const LON_SCALE = 10.2
+const X0 = 150
+const Y0 = 8
+const project = (lon: number, lat: number): [number, number] => [X0 + (lon - 68) * LON_SCALE, Y0 + (37.2 - lat) * LAT_SCALE]
+
+function inIndia(lon: number, lat: number) {
+  let inside = false
+  for (let i = 0, j = INDIA.length - 1; i < INDIA.length; j = i++) {
+    const [xi, yi] = INDIA[i]
+    const [xj, yj] = INDIA[j]
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside
+  }
+  return inside
+}
+
+/** Dot-matrix fill of the outline, computed once at module load. */
+const MAP_DOTS: [number, number][] = (() => {
+  const dots: [number, number][] = []
+  const step = 8
+  const [xMax, yMax] = project(97.5, 8)
+  for (let y = Y0; y <= yMax; y += step) {
+    for (let x = X0; x <= xMax; x += step) {
+      const lon = 68 + (x - X0) / LON_SCALE
+      const lat = 37.2 - (y - Y0) / LAT_SCALE
+      if (inIndia(lon, lat)) dots.push([x, y])
+    }
+  }
+  return dots
+})()
+
+const HQ = project(72.88, 19.08) // Mumbai head branch
+/**
+ * Branch cities linked to the HQ. `side` places each label so the close-set cities don't collide,
+ * and nothing pokes past the panel's left edge (the map is anchored right, so Gujarat sits near it).
+ */
+const CITIES: { name: string; at: [number, number]; side: 'top' | 'right' }[] = [
+  { name: 'AHMEDABAD', at: project(72.57, 23.02), side: 'top' },
+  { name: 'INDORE', at: project(75.86, 22.72), side: 'right' },
+  { name: 'SURAT', at: project(72.83, 21.17), side: 'right' },
+]
+const LABEL_POS = {
+  top: { x: 0, y: -8, textAnchor: 'middle' },
+  right: { x: 8, y: 3.5, textAnchor: 'start' },
+} as const
+
+/** Curved route between HQ and a city, bowed upward like a flight path. */
+function route([x1, y1]: [number, number], [x2, y2]: [number, number]) {
+  const mx = (x1 + x2) / 2
+  const my = (y1 + y2) / 2
+  const len = Math.hypot(x2 - x1, y2 - y1)
+  let nx = -(y2 - y1) / len
+  let ny = (x2 - x1) / len
+  if (ny > 0) [nx, ny] = [-nx, -ny]
+  const k = len * 0.22
+  return `M${x1.toFixed(1)} ${y1.toFixed(1)}Q${(mx + nx * k).toFixed(1)} ${(my + ny * k).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`
+}
+
+/**
+ * India network map (businesses panel): dotted India, signal waves from the Mumbai HQ,
+ * routes to partner cities with leads/approvals travelling along them, and pinging city pins.
+ */
+export function IndiaMapArt({ align = 'right' }: { align?: 'right' | 'center' }) {
+  // viewBox is cropped tight to the map so it can fill its box; anchored right (panel) or centred (About photo).
+  const frame = {
+    viewBox: '140 4 316 328',
+    preserveAspectRatio: align === 'center' ? 'xMidYMid meet' : 'xMaxYMin meet',
+    'aria-hidden': true,
+  } as const
   return (
-    <svg className="pn-bg" viewBox="0 0 600 520" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
-      <g stroke="#6F8DFF" strokeOpacity=".4" fill="none">
-        <path className="flow" d="M300 170L130 90M300 170L470 80M300 170L110 230M300 170L500 230M300 170L210 40M300 170L400 30M300 170L560 150M300 170L50 150" />
+    <>
+    <svg className="pn-bg im" {...frame}>
+      <g className="im-dots" fill="#9DB4FF">
+        {MAP_DOTS.map(([x, y]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r="1.7" />
+        ))}
       </g>
-      <circle cx="300" cy="170" r="90" fill="none" stroke="#1248FF" strokeOpacity=".14" />
-      <circle cx="300" cy="170" r="56" fill="none" stroke="#1248FF" strokeOpacity=".25" />
-      <circle cx="300" cy="170" r="30" fill="#1248FF" fillOpacity=".25" />
-      <circle cx="300" cy="170" r="13" fill="#1248FF" />
-      <g fill="#9DB4FF">
-        <circle cx="130" cy="90" r="6" /><circle cx="470" cy="80" r="6" /><circle cx="110" cy="230" r="6" />
-        <circle cx="210" cy="40" r="5" /><circle cx="400" cy="30" r="5" /><circle cx="560" cy="150" r="5" /><circle cx="50" cy="150" r="5" />
+
+      <g transform={`translate(${HQ[0]} ${HQ[1]})`} fill="none" stroke="#6F8DFF" strokeWidth="1.5">
+        <circle className="im-wave" r="16" />
+        <circle className="im-wave" r="16" style={{ animationDelay: '1.5s' }} />
+        <circle className="im-wave" r="16" style={{ animationDelay: '3s' }} />
       </g>
-      <circle cx="500" cy="230" r="5" fill="#FF1825" />
+
+      {CITIES.map(({ at }, i) => {
+        // Alternate direction: approvals go out from HQ, leads come in to HQ.
+        const d = i % 2 ? route(at, HQ) : route(HQ, at)
+        const delay = { animationDelay: `${((i * 0.41) % 3.4).toFixed(2)}s` }
+        return (
+          <g key={i} fill="none">
+            <path d={d} stroke="#6F8DFF" strokeOpacity=".3" strokeWidth="1" />
+            <path className={i % 2 ? 'im-comet im-lead' : 'im-comet'} d={d} pathLength={1} strokeWidth="2.6" strokeLinecap="round" style={delay} />
+          </g>
+        )
+      })}
+
     </svg>
+
+    {/* Pins and their labels sit on a second, identically framed layer above the panel copy,
+        so each label stays readable right at its pin even where the pin falls behind the heading. */}
+    <svg className="pn-bg im im-top" {...frame}>
+      {CITIES.map(({ name, at: [x, y], side }, i) => (
+        <g key={name} transform={`translate(${x} ${y})`}>
+          <circle className="im-ping" r="3.5" fill="none" stroke="#9DB4FF" strokeWidth="1.5" style={{ animationDelay: `${(i * 0.6).toFixed(2)}s` }} />
+          <circle r="3.2" fill="#fff" />
+          <text {...LABEL_POS[side]} className="im-label im-city">
+            {name}
+          </text>
+        </g>
+      ))}
+      <g transform={`translate(${HQ[0]} ${HQ[1]})`}>
+        <circle className="im-ping hq" r="6" fill="none" stroke="#FF1825" strokeWidth="2" />
+        <circle r="6" fill="#FF1825" />
+        <circle r="2.2" fill="#fff" />
+        <text x="10" y="4" className="im-label">MUMBAI HQ</text>
+      </g>
+    </svg>
+    </>
   )
 }

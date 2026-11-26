@@ -20,6 +20,10 @@ export interface Service {
   faqs: { q: string; a: string }[]
   image: string
   imageAlt: string
+  /** The image is a square banner with its own text: show it whole (no crop, no shade, no tenure chip). */
+  imageBanner?: boolean
+  /** The image is square artwork without text: show it whole (no crop, no shade) but keep the tenure chip. */
+  imageSquare?: boolean
 }
 
 const kyc = {
@@ -71,8 +75,8 @@ export const services: Service[] = [
       { q: 'How much of the car price can be financed?', a: 'It depends on the lender, the car and your profile. Many lenders finance a large share of the on-road price; the exact amount is set by the lender after assessment.' },
       { q: 'Can I get a new car loan if I am self-employed?', a: 'Yes. Self-employed applicants usually share ITRs and business proof instead of salary slips. We tell you exactly what the chosen lender needs.' },
     ],
-    image: 'black-car-rain',
-    imageAlt: 'A new black SUV parked on an open road beside a field',
+    image: 'new-car-loan',
+    imageAlt: 'A car showroom advisor shaking hands with a customer while his family looks on, with new cars behind them',
   },
   {
     id: 'used-car-loan',
@@ -105,8 +109,9 @@ export const services: Service[] = [
       { q: 'How old can the car be?', a: 'Each lender sets its own limit on vehicle age at the end of the loan. Share the year of manufacture and we will tell you which lenders fit.' },
       { q: 'Can I buy from a private seller?', a: 'Yes. We coordinate with the seller for RC, insurance and transfer paperwork so the lender has everything it needs.' },
     ],
-    image: 'sedan-twilight',
-    imageAlt: 'A busy Indian street lined with cars',
+    image: 'used-car-loan',
+    imageAlt: 'Used Car Loan: get a loan for your pre-owned car. Quick approval, attractive interest rates and flexible repayment, shown beside a smiling man leaning on a white SUV',
+    imageBanner: true,
   },
   {
     id: 'car-refinance',
@@ -138,8 +143,9 @@ export const services: Service[] = [
     faqs: [
       { q: 'Is car refinance the same as a balance transfer?', a: 'No. Refinance raises funds against a car you own. If you already have a running car loan and want to move it, see BT Top-up.' },
     ],
-    image: 'sedan-front',
-    imageAlt: 'Close-up of the bonnet and badge of a dark sedan',
+    image: 'car-refinance',
+    imageAlt: 'Car Refinance: get a better loan on your existing car. Lower interest rate, higher loan amount, flexible tenure and quick approval, shown beside a smiling man and a red SUV',
+    imageBanner: true,
   },
   {
     id: 'bt-top-up',
@@ -171,8 +177,9 @@ export const services: Service[] = [
     faqs: [
       { q: 'Will a balance transfer lower my EMI?', a: 'It may, if the new lender offers different terms, but it is not guaranteed. The new lender decides the rate, tenure and top-up amount.' },
     ],
-    image: 'documentation',
-    imageAlt: 'A team discussing paperwork in an office',
+    image: 'bt-top-up',
+    imageAlt: 'A car loan moving from one bank to another, with an arrow to the new bank, extra money as a top-up and a calendar for the new tenure',
+    imageSquare: true,
   },
   {
     id: 'loan-rto-services',
@@ -204,8 +211,10 @@ export const services: Service[] = [
     faqs: [
       { q: 'How long does RTO work take?', a: 'Timelines and fees are set by the RTO and differ by state. We keep you updated throughout.' },
     ],
-    image: 'consultation',
-    imageAlt: 'Staff working through documents in an office',
+    image: 'loan-rto-services',
+    imageAlt: 'A customer signing loan papers with an advisor in a car showroom, beside a new SUV with a bow, with loan and RTO icons above them',
+    // Shown as a banner (no tenure chip): the long "Alongside your loan" chip would cover the signing scene.
+    imageBanner: true,
   },
   {
     id: 'dealer-distributorship',
@@ -237,8 +246,9 @@ export const services: Service[] = [
     faqs: [
       { q: 'Is there a fee to become a partner?', a: 'Commercial terms are discussed directly with our team during onboarding.' },
     ],
-    image: 'showroom-white',
-    imageAlt: 'A row of SUVs lined up for sale',
+    image: 'dealer-distributorship',
+    imageAlt: 'A Carzenx partner shaking hands with a car dealer in a showroom, with a dealership, a distribution warehouse and a network map of India above them',
+    imageSquare: true,
   },
 ]
 

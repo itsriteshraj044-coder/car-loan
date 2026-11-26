@@ -35,7 +35,8 @@ export default function DealerNetwork() {
         sub={s.intro}
         image={s.image}
         imageAlt={s.imageAlt}
-        chip={{ big: '1,000+', small: 'Car dealers & DSAs already on board' }}
+        banner={s.imageBanner || s.imageSquare}
+        chip={s.imageBanner ? undefined : { big: '1,000+', small: 'Car dealers & DSAs already on board' }}
       >
         <div className="hero-cta">
           <a href="#partner-form" className="btn btn-blue btn-lg">Become a partner <span className="arr">→</span></a>

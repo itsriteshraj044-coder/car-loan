@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Check, Eye, Gem, MapPin, Target } from 'lucide-react'
 import { site } from '../data/site'
-import { CtaBand, Img, PageHero, SectionHead, Seo } from '../components/ui'
+import { CtaBand, PageHero, SectionHead, Seo } from '../components/ui'
+import { IndiaMapArt } from '../components/CarArt'
 
 export default function About() {
   return (
@@ -22,8 +23,8 @@ export default function About() {
 
       <section className="sec">
         <div className="wrap two">
-          <div className="photo rv" style={{ aspectRatio: '4/4.2' }}>
-            <Img name="dealership-couple" alt="Two people reviewing paperwork at an office desk" sizes="(max-width: 900px) 100vw, 50vw" />
+          <div className="photo map rv" style={{ aspectRatio: '4/4.2' }}>
+            <IndiaMapArt align="center" />
             <div className="badge"><b>Pan-India</b><span>Head branch in Mumbai</span></div>
           </div>
           <div>

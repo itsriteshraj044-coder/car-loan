@@ -25,7 +25,8 @@ export default function ServiceDetail() {
         sub={s.short}
         image={s.image}
         imageAlt={s.imageAlt}
-        chip={{ big: s.tenure.replace(' years', ' yrs'), small: 'Indicative tenure' }}
+        banner={s.imageBanner || s.imageSquare}
+        chip={s.imageBanner ? undefined : { big: s.tenure.replace(' years', ' yrs'), small: 'Indicative tenure' }}
       >
         <div className="hero-cta">
           <Link to={`/apply?loan=${s.id}`} className="btn btn-blue btn-lg">Apply for {s.title} <span className="arr">→</span></Link>

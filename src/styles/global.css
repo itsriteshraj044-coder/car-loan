@@ -158,7 +158,6 @@ button { font: inherit; }
 .dash { animation: dashmove 1.4s linear infinite; }
 .st { animation: streak linear infinite; }
 .flow { stroke-dasharray: 3 7; animation: flow 2.4s linear infinite; }
-.needle { transform-box: fill-box; transform-origin: 0 100%; animation: needle 2.4s 0.4s var(--ease) both; }
 @keyframes carIn { from { opacity: 0; transform: translateX(70px); } }
 @keyframes bob { to { transform: translateY(-2px); } }
 @keyframes beam { from { opacity: 0.65; } to { opacity: 1; } }
@@ -166,7 +165,6 @@ button { font: inherit; }
 @keyframes dashmove { to { stroke-dashoffset: -240; } }
 @keyframes streak { from { transform: translateX(0); } to { transform: translateX(2300px); } }
 @keyframes flow { to { stroke-dashoffset: -20; } }
-@keyframes needle { from { transform: rotate(-110deg); } }
 .dl-art { position: absolute; right: -4%; bottom: -2%; width: min(980px, 86%); opacity: 0.55; pointer-events: none; }
 .dl-art svg { width: 100%; display: block; overflow: visible; }
 .hero-body { width: 100%; flex: 1; display: grid; grid-template-columns: minmax(0, 780px); align-items: center; position: relative; z-index: 2; padding-top: clamp(48px, 7vh, 96px); padding-bottom: clamp(40px, 7vh, 84px); }
@@ -235,6 +233,9 @@ button { font: inherit; }
 .ph .hero-cta { margin-top: 32px; }
 .ph-media { position: relative; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 4 / 3.4; box-shadow: 0 40px 80px -40px rgba(18, 72, 255, 0.6); animation: fadeUp 1s 0.2s var(--ease) both; }
 .ph-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(7, 9, 15, 0.6)); }
+/* Square banner artwork (has its own text): show it whole, no shade. */
+.ph-media.banner { aspect-ratio: 1 / 1; }
+.ph-media.banner::after { content: none; }
 .ph-chip { position: absolute; left: 18px; bottom: 18px; z-index: 2; display: flex; align-items: center; gap: 12px; background: #fff; color: var(--black); border-radius: 14px; padding: 12px 16px; box-shadow: 0 14px 34px -14px rgba(7, 9, 15, 0.6); }
 .ph-chip b { font-size: 24px; font-weight: 800; color: var(--blue); line-height: 1; letter-spacing: -0.02em; }
 .ph-chip span { font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--ink-2); max-width: 16ch; }
@@ -275,9 +276,12 @@ button { font: inherit; }
 /* What is CARZENX */
 .what-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
 .photo { position: relative; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 4 / 4.6; max-height: 640px; background: var(--black); box-shadow: 0 30px 60px -30px rgba(7, 9, 15, 0.5); }
+/* About "Our story": the animated India map in place of a photo. */
+.photo.map { isolation: isolate; background: radial-gradient(70% 70% at 50% 40%, #1a2f8f, #07090f); }
+.photo.map .badge { z-index: 2; }
+/* Stop the map above the "Pan-India" badge so the badge never covers South India. */
+.photo.map .pn-bg.im { height: calc(97% - 96px); }
 .photo.art { aspect-ratio: 480 / 600; max-height: none; width: 100%; max-width: 520px; justify-self: center; }
-.photo img { transition: transform 1.4s var(--ease); }
-.photo:hover img { transform: scale(1.03); }
 .badge { position: absolute; left: 20px; bottom: 20px; background: #fff; border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 14px 34px -14px rgba(7, 9, 15, 0.6); }
 .badge b { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; color: var(--blue); line-height: 1; }
 .badge span { font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--ink-2); max-width: 16ch; }
@@ -359,7 +363,8 @@ button { font: inherit; }
 .sv-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
 .sv-ic { width: 56px; height: 56px; border-radius: 14px; background: rgba(18, 72, 255, 0.08); color: var(--blue); display: grid; place-items: center; transition: background 0.35s, color 0.35s; }
 .sv:hover .sv-ic { background: var(--blue); color: #fff; }
-.sv-n { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; color: transparent; -webkit-text-stroke: 1.6px #c4cada; }
+.sv-n { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; color: transparent; -webkit-text-stroke: 1.6px #c4cada; transition: color 0.35s, -webkit-text-stroke-color 0.35s; }
+.sv:hover .sv-n, .sv:focus-within .sv-n { color: var(--blue); -webkit-text-stroke-color: var(--blue); }
 .sv h3 { margin: 0 0 10px; }
 .sv p { margin: 0 0 18px; font-size: 15px; color: var(--ink-2); flex: 1; }
 .sv .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
@@ -446,10 +451,26 @@ button { font: inherit; }
 .pn:hover { transform: translateY(-6px); box-shadow: 0 34px 60px -30px rgba(18, 72, 255, 0.5); }
 .pn.gauge { background: repeating-linear-gradient(-8deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 60px), linear-gradient(135deg, #1248ff 0%, #0b1a5e 55%, #07090f 100%); }
 .pn.net { background: radial-gradient(70% 70% at 50% 33%, #1a2f8f, #07090f); }
-.pn-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; transition: transform 1.4s var(--ease); }
-.pn:hover .pn-bg { transform: scale(1.05); }
-.pn-bg img { transition: transform 1.4s var(--ease); }
-.pn:hover .pn-bg img { transform: scale(1.05); }
+/* India network map panel: signal waves from HQ, routes with travelling leads/approvals, pinging cities */
+/* The map runs nearly the full panel height on the right, with no dark scrim over it so all of it stays crisp. */
+.pn-bg.im { top: 3%; left: auto; right: 2%; width: 96%; height: 94%; overflow: visible; }
+.pn.net::after { content: none; }
+.pn-bg.im-top { z-index: 1; pointer-events: none; }
+.im-label.im-city { font-size: 10px; font-weight: 700; }
+.im-dots { opacity: 0.5; transition: opacity 0.5s; }
+.pn.net:hover .im-dots { opacity: 0.75; }
+.im-wave { transform-box: fill-box; transform-origin: center; animation: im-wave 4.5s ease-out infinite; }
+.im-comet { stroke: #9db4ff; stroke-dasharray: 0.22 1.3; stroke-dashoffset: 0.22; filter: drop-shadow(0 0 3px rgba(157, 180, 255, 0.9)); animation: im-comet 2.8s var(--ease) infinite; }
+.im-comet.im-lead { stroke: #fff; }
+.im-ping { transform-box: fill-box; transform-origin: center; animation: im-ping 2.6s ease-out infinite; }
+.im-ping.hq { animation-duration: 1.8s; }
+.im-label { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; fill: #fff; stroke: #07090f; stroke-width: 4px; stroke-linejoin: round; paint-order: stroke; }
+/* Keep the panel copy crisp over the busy map. */
+.pn.net .pn-c { text-shadow: 0 1px 2px rgba(7, 9, 15, 0.95), 0 2px 16px rgba(7, 9, 15, 0.9); }
+@keyframes im-wave { from { transform: scale(1); stroke-opacity: 0.6; } to { transform: scale(7); stroke-opacity: 0; } }
+@keyframes im-comet { to { stroke-dashoffset: -1.08; } }
+@keyframes im-ping { from { transform: scale(1); stroke-opacity: 0.9; } to { transform: scale(3.2); stroke-opacity: 0; } }
+.pn-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
 .pn::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(7, 9, 15, 0) 28%, rgba(7, 9, 15, 0.93) 82%); }
 .pn-c { width: 100%; padding: clamp(26px, 3.4vw, 44px); }
 .pn-tag { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.18em; color: var(--blue-xl); }
