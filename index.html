@@ -9,6 +9,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="preload" as="image" href="/images/carzenx-logo-720.png" />
+    <script>
+      // If a build file fails to load (stale cached page pointing at a file a newer deploy removed),
+      // reload once with a cache-busting query instead of leaving a blank page.
+      addEventListener('error', function (e) {
+        var t = e.target, u = t && (t.src || t.href)
+        if (!u || u.indexOf('/assets/') < 0) return
+        try {
+          var last = +sessionStorage.getItem('cz-reload') || 0
+          if (Date.now() - last < 15000) return // already retried just now: don't loop
+          sessionStorage.setItem('cz-reload', String(Date.now()))
+        } catch (_) { return }
+        var q = location.search ? location.search + '&' : '?'
+        location.replace(location.pathname + q + 'v=' + Date.now() + location.hash)
+      }, true)
+    </script>
     <title>Carzenx Pvt. Ltd. | Car Loan DSA Distributor in India Since 2017</title>
     <meta name="description" content="Carzenx Pvt. Ltd. is a pan-India car loan DSA distributor since 2017. Connect with leading partner banks like Axis Bank and ICICI Bank for new car, used car, refinance and BT top-up loans with complete RTO support." />
     <meta property="og:type" content="website" />
