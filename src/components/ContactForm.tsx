@@ -117,7 +117,7 @@ export default function ContactForm({ preset }: { preset?: string | null }) {
   const pre = needFor(preset)
   // Requirements that aren't among the usual four (refinance, Loan + RTO) are added as a fifth choice.
   const choices = pre && !needs.includes(pre) ? [pre, ...needs] : needs
-  const initial: Values = { need: pre?.v ?? '', name: '', phone: '', make: '', model: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', message: '', consent: '', website: '' }
+  const initial: Values = { need: pre?.v ?? '', name: '', phone: '', make: '', model: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', lender: '', message: '', consent: '', website: '' }
   const f = useForm(initial, (v) => {
     const isNew = v.need === 'New car' || v.year.includes('New')
     return {
@@ -129,6 +129,7 @@ export default function ContactForm({ preset }: { preset?: string | null }) {
       year: v.need !== 'Reference' && !v.year ? 'Choose the year.' : '',
       regState: v.need !== 'Reference' && !v.regState ? 'Choose the registration state.' : '',
       r1: v.need === 'Reference' ? '' : regError(v, !isNew),
+      lender: v.need === 'BT Top-up' && v.lender.trim().length < 2 ? 'Enter the bank or NBFC your current loan is with.' : '',
       message: v.need === 'Reference' && !v.message.trim() ? 'Tell us who you are referring.' : '',
       consent: !v.consent ? 'Please accept to continue.' : '',
     }
@@ -151,6 +152,7 @@ export default function ContactForm({ preset }: { preset?: string | null }) {
       ['Year', v.year],
       ['Registration state', v.regState],
       ['Registration number', regNumber(v)],
+      ['Current loan with', v.need === 'BT Top-up' ? v.lender : ''],
       ['Message', v.message],
     ])
     setSent(true)
@@ -196,6 +198,9 @@ export default function ContactForm({ preset }: { preset?: string | null }) {
             <SearchSelect key={`model-${v.make}`} f={f} k="model" label="Model" options={modelsFor(v.make)} placeholder={v.make ? 'Select or type to search' : 'Select a make first'} disabled={!v.make} />
             <Select f={f} k="year" label="Year" options={years} />
             <RegFields f={f} optional={isNew} />
+            {v.need === 'BT Top-up' && (
+              <Field f={f} k="lender" label="Which bank is your current car loan with?" placeholder="e.g. HDFC Bank, Tata Capital" />
+            )}
           </>
         )}
 

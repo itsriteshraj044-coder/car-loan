@@ -1,11 +1,11 @@
-import { useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 const types = [
-  { id: 'new-car-loan', label: 'New car', maxYears: 7, amount: 800000 },
-  { id: 'used-car-loan', label: 'Used car', maxYears: 6, amount: 500000 },
-  { id: 'car-refinance', label: 'Refinance', maxYears: 5, amount: 400000 },
-  { id: 'bt-top-up', label: 'BT Top-up', maxYears: 5, amount: 600000 },
+  { id: 'new-car-loan', label: 'New car', amount: 800000 },
+  { id: 'used-car-loan', label: 'Used car', amount: 500000 },
+  { id: 'car-refinance', label: 'Refinance', amount: 400000 },
+  { id: 'bt-top-up', label: 'BT Top-up', amount: 600000 },
 ]
 
 const inr = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN')
@@ -24,6 +24,10 @@ function Range({
   suffix,
   decimals = 0,
   format = (v: number) => String(v),
+  typeMax = max,
+  log = false,
+  extra,
+  note,
 }: {
   id: string
   label: string
@@ -38,8 +42,27 @@ function Range({
   suffix?: string
   decimals?: number
   format?: (v: number) => string
+  /** Highest value that can be typed in the box; defaults to the slider's max. */
+  typeMax?: number
+  /**
+   * Logarithmic slider for wide ranges (₹1 lakh to ₹50 crore): equal slider distance = equal ratio,
+   * so everyday amounts get most of the track. Values land on round numbers (2 significant figures).
+   */
+  log?: boolean
+  /** Control shown beside the label, e.g. a unit toggle. */
+  extra?: ReactNode
+  /** Hint under the slider, e.g. how to enter a value beyond its range. */
+  note?: string
 }) {
-  const p = ((Math.min(Math.max(value, min), max) - min) / (max - min)) * 100
+  const clamped = Math.min(Math.max(value, min), max)
+  const LOG_STEPS = 1000
+  const toPos = (v: number) => Math.round((Math.log(v / min) / Math.log(max / min)) * LOG_STEPS)
+  const fromPos = (pos: number) => {
+    const raw = min * (max / min) ** (pos / LOG_STEPS)
+    const unit = Math.max(step, 10 ** (Math.floor(Math.log10(raw)) - 1) / 2)
+    return Math.min(max, Math.max(min, Math.round(raw / unit) * unit))
+  }
+  const p = log ? (toPos(clamped) / LOG_STEPS) * 100 : ((clamped - min) / (max - min)) * 100
   const [draft, setDraft] = useState<string | null>(null)
 
   const parse = (s: string) => {
@@ -51,7 +74,7 @@ function Range({
     if (draft === null) return
     const n = parse(draft)
     const f = 10 ** decimals
-    const v = Number.isNaN(n) ? value : Math.min(max, Math.max(min, Math.round(n * f) / f))
+    const v = Number.isNaN(n) ? value : Math.min(typeMax, Math.max(min, Math.round(n * f) / f))
     onChange(v)
     setDraft(null)
   }
@@ -60,13 +83,16 @@ function Range({
     const clean = decimals > 0 ? s.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1') : s.replace(/\D/g, '')
     setDraft(clean)
     const n = parse(clean)
-    if (!Number.isNaN(n) && n >= min && n <= max) onChange(n)
+    if (!Number.isNaN(n) && n >= min && n <= typeMax) onChange(n)
   }
 
   return (
     <div className="rng">
       <div className="rng-top">
-        <label htmlFor={`${id}-num`}>{label}</label>
+        <div className="rng-lbl">
+          <label htmlFor={`${id}-num`}>{label}</label>
+          {extra}
+        </div>
         <div className="rng-box">
           {prefix && <span aria-hidden="true">{prefix}</span>}
           <input
@@ -93,11 +119,11 @@ function Range({
         id={id}
         aria-label={label}
         type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        min={log ? 0 : min}
+        max={log ? LOG_STEPS : max}
+        step={log ? 1 : step}
+        value={log ? toPos(clamped) : value}
+        onChange={(e) => onChange(log ? fromPos(Number(e.target.value)) : Number(e.target.value))}
         style={{ '--p': `${p}%` } as CSSProperties}
         aria-valuetext={display}
       />
@@ -105,117 +131,71 @@ function Range({
         <span>{ends[0]}</span>
         <span>{ends[1]}</span>
       </div>
-    </div>
-  )
-}
-
-function NumBox({
-  id,
-  label,
-  value,
-  min,
-  max,
-  suffix,
-  onChange,
-  onStart,
-}: {
-  id: string
-  label: string
-  value: number
-  min: number
-  max: number
-  suffix: string
-  onChange: (v: number) => void
-  onStart?: () => void
-}) {
-  const [draft, setDraft] = useState<string | null>(null)
-  const shown = draft ?? String(value)
-
-  const commit = () => {
-    if (draft === null) return
-    const n = parseInt(draft, 10)
-    if (Number.isFinite(n)) onChange(Math.min(max, Math.max(min, n)))
-    setDraft(null)
-  }
-
-  return (
-    <div className="rng-box">
-      <input
-        id={id}
-        aria-label={label}
-        type="text"
-        inputMode="numeric"
-        value={shown}
-        onFocus={(e) => {
-          onStart?.()
-          setDraft(String(value))
-          requestAnimationFrame(() => e.target.select())
-        }}
-        onChange={(e) => {
-          const clean = e.target.value.replace(/\D/g, '').slice(0, String(max).length)
-          setDraft(clean)
-          const n = parseInt(clean, 10)
-          if (Number.isFinite(n) && n >= min && n <= max) onChange(n)
-        }}
-        onBlur={commit}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') e.currentTarget.blur()
-        }}
-        style={{ width: `${Math.max(2, shown.length) + 1}ch` }}
-      />
-      <span aria-hidden="true">{suffix}</span>
+      {note && <p className="rng-note">{note}</p>}
     </div>
   )
 }
 
 const MIN_MONTHS = 1
+const SLIDER_YEARS = 20
+/** Longest tenure that can be typed in, in months (99 years). */
+const MAX_MONTHS = 99 * 12
 
-function Tenure({ months, maxYears, onChange }: { months: number; maxYears: number; onChange: (m: number) => void }) {
-  const max = maxYears * 12
+/** Tenure entered in years or months (visitor's choice); the EMI always works in months. */
+function Tenure({ months, onChange }: { months: number; onChange: (m: number) => void }) {
+  const [unit, setUnit] = useState<'years' | 'months'>('years')
+  const set = (m: number) => onChange(Math.min(MAX_MONTHS, Math.max(MIN_MONTHS, Math.round(m))))
+  const years = months / 12
   const y = Math.floor(months / 12)
   const m = months % 12
-  // Years at the moment the months box was focused, so typing e.g. "25" adds 25 months
-  // to that base instead of compounding as the total rolls over into the next year
-  const baseYears = useRef(y)
-  const set = (total: number) => onChange(Math.min(max, Math.max(MIN_MONTHS, total)))
-  const p = ((months - MIN_MONTHS) / (max - MIN_MONTHS)) * 100
   const text = `${y} ${y === 1 ? 'year' : 'years'}${m ? ` ${m} ${m === 1 ? 'month' : 'months'}` : ''}`
 
-  return (
-    <div className="rng" role="group" aria-labelledby="emi-ten-lbl">
-      <div className="rng-top">
-        <label id="emi-ten-lbl" htmlFor="emi-ten-y">Tenure</label>
-        <div className="rng-pair">
-          <NumBox id="emi-ten-y" label="Tenure years" value={y} min={0} max={maxYears} suffix={y === 1 ? 'yr' : 'yrs'} onChange={(v) => set(v * 12 + m)} />
-          <NumBox
-            id="emi-ten-m"
-            label="Tenure months"
-            value={m}
-            min={0}
-            max={max}
-            suffix={m === 1 ? 'mo' : 'mos'}
-            onStart={() => (baseYears.current = y)}
-            onChange={(v) => set(baseYears.current * 12 + v)}
-          />
-        </div>
-      </div>
-      <input
-        id="emi-ten"
-        aria-label="Tenure in months"
-        type="range"
-        min={MIN_MONTHS}
-        max={max}
-        step={1}
-        value={months}
-        onChange={(e) => set(Number(e.target.value))}
-        style={{ '--p': `${p}%` } as CSSProperties}
-        aria-valuetext={text}
-      />
-      <div className="rng-ends">
-        <span>1 month</span>
-        <span>{maxYears} years</span>
-      </div>
+  const toggle = (
+    <div className="unit" role="group" aria-label="Enter tenure in">
+      {(['years', 'months'] as const).map((u) => (
+        <button key={u} type="button" aria-pressed={unit === u} onClick={() => setUnit(u)}>
+          {u === 'years' ? 'Years' : 'Months'}
+        </button>
+      ))}
     </div>
+  )
+
+  return unit === 'years' ? (
+    <Range
+      key="years"
+      id="emi-ten"
+      label="Tenure"
+      extra={toggle}
+      value={Math.round(years * 10) / 10}
+      min={1}
+      max={SLIDER_YEARS}
+      step={1}
+      typeMax={MAX_MONTHS / 12}
+      decimals={1}
+      format={(v) => String(Math.round(v * 10) / 10)}
+      display={text}
+      ends={['1 year', `${SLIDER_YEARS} years+`]}
+      note={`More than ${SLIDER_YEARS} years? Type it in the box above.`}
+      onChange={(v) => set(v * 12)}
+      suffix={years === 1 ? 'year' : 'years'}
+    />
+  ) : (
+    <Range
+      key="months"
+      id="emi-ten"
+      label="Tenure"
+      extra={toggle}
+      value={months}
+      min={MIN_MONTHS}
+      max={SLIDER_YEARS * 12}
+      step={1}
+      typeMax={MAX_MONTHS}
+      display={text}
+      ends={['1 month', `${SLIDER_YEARS * 12} months+`]}
+      note={`More than ${SLIDER_YEARS * 12} months? Type it in the box above.`}
+      onChange={set}
+      suffix={months === 1 ? 'month' : 'months'}
+    />
   )
 }
 
@@ -228,7 +208,6 @@ export default function EmiCalculator() {
   const pick = (t: (typeof types)[number]) => {
     setType(t)
     setAmount(t.amount)
-    setMonths((mo) => Math.min(mo, t.maxYears * 12))
   }
 
   const r = useMemo(() => {
@@ -256,24 +235,29 @@ export default function EmiCalculator() {
           label="Loan amount"
           value={amount}
           min={100000}
-          max={5000000}
-          step={50000}
+          max={50_00_00_000}
+          typeMax={99_99_99_99_999}
+          step={5000}
+          log
           display={inr(amount)}
-          ends={['₹1 lakh', '₹50 lakh']}
+          ends={['₹1 lakh', '₹50 crore+']}
+          note="More than ₹50 crore? Type the amount in the box above."
           onChange={setAmount}
           prefix="₹"
           format={(v) => Math.round(v).toLocaleString('en-IN')}
         />
-        <Tenure months={months} maxYears={type.maxYears} onChange={setMonths} />
+        <Tenure months={months} onChange={setMonths} />
         <Range
           id="emi-rate"
           label="Interest rate (p.a.)"
           value={rate}
           min={7}
-          max={18}
+          max={30}
+          typeMax={50}
           step={0.25}
           display={`${rate.toFixed(2)}%`}
-          ends={['7%', '18%']}
+          ends={['7%', '30%+']}
+          note="Rate above 30%? Type it in the box above."
           onChange={setRate}
           suffix="%"
           decimals={2}
