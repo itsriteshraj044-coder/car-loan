@@ -43,7 +43,7 @@ export default function Apply() {
         crumbs={svc ? [{ label: svc.title, to: `/services/${svc.id}` }, { label: 'Apply' }] : [{ label: 'Apply' }]}
         title={svc ? `Apply for ${svc.title}.` : 'Check your car loan options.'}
         sub="One short form, about two minutes. Our team will call you to explain suitable lenders and the documents you need."
-        art={svc ? <HeroGauge /> : undefined}
+        art={<HeroGauge />}
       >
         <div className="tags" style={{ marginTop: 26 }}>
           <span className="tag" style={tag}><Clock size={12} style={{ display: 'inline', marginRight: 6 }} />2 minutes</span>
