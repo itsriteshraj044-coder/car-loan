@@ -10,9 +10,14 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^assets/ - [R=404,L]
 
-# React Router: send every other non-file request to index.html
+# Leave the server-side /api folder alone
+RewriteRule ^api(/|$) - [L]
+
+# React Router: send every other non-file request to index.html.
+# Folders are included on purpose: an older site build left about/, contact/, services/... folders
+# on the server, and serving those (after a /about -> /about/ redirect) loaded a stale page that
+# pointed at deleted files and rendered blank.
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
 
 <IfModule mod_headers.c>
