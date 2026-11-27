@@ -204,12 +204,17 @@ export function DealerArt() {
 export function GaugeArt({
   needleRef,
   arcRef,
+  className = 'pn-bg',
+  viewBox = '0 0 600 520',
 }: {
   needleRef?: Ref<SVGGElement>
   arcRef?: Ref<SVGPathElement>
+  className?: string
+  /** Defaults to the full panel; pass a tighter box (e.g. "150 25 300 300") to show just the dial. */
+  viewBox?: string
 }) {
   return (
-    <svg className="pn-bg" viewBox="0 0 600 520" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+    <svg className={className} viewBox={viewBox} preserveAspectRatio="xMidYMin meet" aria-hidden="true">
       <g transform="translate(300 175)">
         <circle r="132" fill="#070b1c" fillOpacity=".6" stroke="#9DB4FF" strokeOpacity=".35" strokeWidth="2" />
         <path d="M-80 80A113 113 0 1 1 80 80" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="14" strokeDasharray="2 10.5" />

@@ -106,6 +106,7 @@ export function PageHero({
   imageAlt,
   banner,
   chip,
+  art,
 }: {
   crumbs: { label: string; to?: string }[]
   title: ReactNode
@@ -116,10 +117,12 @@ export function PageHero({
   /** Square artwork with its own text: shown whole, without the photo crop and bottom shade. */
   banner?: boolean
   chip?: { big: string; small: string }
+  /** Artwork (e.g. an animated SVG) shown in place of a photo on the right. */
+  art?: ReactNode
 }) {
   return (
     <section className="ph">
-      <div className={`wrap ph-grid ${image ? '' : 'solo'}`}>
+      <div className={`wrap ph-grid ${image || art ? '' : 'solo'}`}>
         <div>
           <nav className="crumbs" aria-label="Breadcrumb">
             <Link to="/">Home</Link>
@@ -134,6 +137,7 @@ export function PageHero({
           {sub && <p className="ph-sub">{sub}</p>}
           {children}
         </div>
+        {art && !image && <div className="ph-art">{art}</div>}
         {image && (
           <div className={banner ? 'ph-media banner' : 'ph-media'}>
             <Img name={image} alt={imageAlt ?? ''} sizes="(max-width: 900px) 100vw, 45vw" eager />

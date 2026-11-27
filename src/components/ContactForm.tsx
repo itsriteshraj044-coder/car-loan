@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
-import { ArrowLeftRight, CarFront, Gauge, UserPlus } from 'lucide-react'
+import { ArrowLeftRight, CarFront, FileCheck2, Gauge, RefreshCw, UserPlus, type LucideIcon } from 'lucide-react'
 import { Consent, Field, SearchSelect, Select, Thanks, isPhone, sendLead, useForm, type Values } from './forms'
 import { carMakes, modelsFor } from '../data/carModels'
 
@@ -20,12 +20,24 @@ const regStates = Object.keys(stateCodes).sort()
 const NOW = new Date().getFullYear()
 export const years = Array.from({ length: NOW - 2014 + 1 }, (_, i) => NOW - i).map((y) => (y === NOW ? `${y} (New)` : String(y)))
 
-const needs = [
+type Need = { v: string; icon: LucideIcon; d: string }
+const needs: Need[] = [
   { v: 'New car', icon: CarFront, d: 'Loan for a new car' },
   { v: 'Old car', icon: Gauge, d: 'Loan for a used car' },
   { v: 'BT Top-up', icon: ArrowLeftRight, d: 'Move your loan + top-up' },
   { v: 'Reference', icon: UserPlus, d: 'Refer a customer to us' },
 ]
+
+/** Loan pages that link to /apply?loan=<id>, mapped to the requirement they pre-select. */
+const presetNeed: Record<string, Need> = {
+  'new-car-loan': needs[0],
+  'used-car-loan': needs[1],
+  'bt-top-up': needs[2],
+  'car-refinance': { v: 'Car refinance', icon: RefreshCw, d: 'Loan on a car you own' },
+  'loan-rto-services': { v: 'Loan + RTO', icon: FileCheck2, d: 'Loan with RTO paperwork' },
+}
+/** The requirement a loan page pre-selects, if any. */
+export const needFor = (loanId?: string | null) => (loanId ? presetNeed[loanId] : undefined)
 
 /** Registration number split into boxes: state code / RTO / series / number, e.g. BR 07 CR 0001. */
 const parts = [
@@ -100,8 +112,12 @@ export function regError(v: Values, required: boolean) {
   return regValid(v) ? '' : 'Check the registration number, e.g. BR 07 CR 0001.'
 }
 
-export default function ContactForm() {
-  const initial: Values = { need: '', name: '', phone: '', make: '', model: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', message: '', consent: '', website: '' }
+/** `preset` is a loan page id (e.g. "car-refinance"); its requirement starts selected. */
+export default function ContactForm({ preset }: { preset?: string | null }) {
+  const pre = needFor(preset)
+  // Requirements that aren't among the usual four (refinance, Loan + RTO) are added as a fifth choice.
+  const choices = pre && !needs.includes(pre) ? [pre, ...needs] : needs
+  const initial: Values = { need: pre?.v ?? '', name: '', phone: '', make: '', model: '', year: '', regState: '', r1: '', r2: '', r3: '', r4: '', message: '', consent: '', website: '' }
   const f = useForm(initial, (v) => {
     const isNew = v.need === 'New car' || v.year.includes('New')
     return {
@@ -153,12 +169,13 @@ export default function ContactForm() {
     <form className="fm" onSubmit={submit} noValidate>
       <fieldset style={{ border: 0, padding: 0, margin: '0 0 24px' }}>
         <legend className="fld" style={{ fontWeight: 700, fontSize: 14, marginBottom: 10, padding: 0 }}>What do you need?</legend>
-        <div className="choice four">
-          {needs.map((n, i) => {
+        <div className={`choice ${choices.length > 4 ? 'five' : 'four'}`}>
+          {choices.map((n, i) => {
             const Icon = n.icon
             return (
               <label key={n.v}>
-                <input type="radio" name="need" id={i === 0 ? 'f-need' : undefined} value={n.v} checked={v.need === n.v} onChange={f.set('need')} />
+                {/* Coming from a loan page locks the requirement to that loan */}
+                <input type="radio" name="need" id={i === 0 ? 'f-need' : undefined} value={n.v} checked={v.need === n.v} onChange={f.set('need')} disabled={!!pre && n !== pre} />
                 <Icon size={22} aria-hidden="true" />
                 <b>{n.v}</b>
                 <small>{n.d}</small>

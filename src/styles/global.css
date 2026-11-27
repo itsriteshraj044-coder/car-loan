@@ -240,7 +240,10 @@ button { font: inherit; }
 .ph-chip { position: absolute; left: 18px; bottom: 18px; z-index: 2; display: flex; align-items: center; gap: 12px; background: #fff; color: var(--black); border-radius: 14px; padding: 12px 16px; box-shadow: 0 14px 34px -14px rgba(7, 9, 15, 0.6); }
 .ph-chip b { font-size: 24px; font-weight: 800; color: var(--blue); line-height: 1; letter-spacing: -0.02em; }
 .ph-chip span { font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--ink-2); max-width: 16ch; }
-@media (max-width: 900px) { .ph-grid { grid-template-columns: 1fr; } .ph-media { aspect-ratio: 16 / 10; } }
+.ph-art { display: grid; place-items: center; animation: fadeUp 1s 0.2s var(--ease) both; }
+.ph-gauge { width: min(100%, 380px); aspect-ratio: 1; filter: drop-shadow(0 30px 60px rgba(18, 72, 255, 0.45)); }
+.ph-gauge svg { display: block; width: 100%; height: 100%; }
+@media (max-width: 900px) { .ph-grid { grid-template-columns: 1fr; } .ph-media { aspect-ratio: 16 / 10; } .ph-gauge { width: min(70%, 280px); } }
 
 /* Benefit tiles */
 .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -657,6 +660,9 @@ button { font: inherit; }
 .choice svg { color: var(--blue); }
 .choice b { font-size: 15px; }
 .choice.four { grid-template-columns: repeat(4, 1fr); }
+.choice.five { grid-template-columns: repeat(5, 1fr); }
+.choice label:has(input:disabled) { opacity: 0.45; cursor: not-allowed; background: var(--grey); }
+.choice label:has(input:disabled):hover { border-color: var(--line); }
 .reg { display: flex; gap: 8px; }
 .reg input { min-width: 0; text-align: center; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
 .reg input::placeholder { font-weight: 600; color: #a5abba; }
@@ -672,7 +678,8 @@ button { font: inherit; }
 .thanks h2 { margin: 0 0 12px; font-size: clamp(26px, 3vw, 34px); font-weight: 800; letter-spacing: -0.02em; outline: 0; }
 .thanks p { margin: 0 auto 16px; max-width: 48ch; color: var(--ink-2); }
 .thanks .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
-@media (max-width: 760px) { .choice, .choice.four { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 1000px) { .choice.five { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) { .choice, .choice.four, .choice.five { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .fm-grid, .choice { grid-template-columns: 1fr; } .fm-actions .btn { flex: 1 1 100%; } }
 
 /* Contact */

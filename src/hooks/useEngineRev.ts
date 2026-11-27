@@ -24,6 +24,8 @@ export function useEngineRev() {
   const arcRef = useRef<SVGPathElement>(null)
   const rpm = useRef(0)
   const revving = useRef(false)
+  /** True during an automatic (non-hover) rev: the needle moves but the engine stays silent. */
+  const muted = useRef(false)
   const frame = useRef(0)
   const last = useRef(0)
   const engine = useRef<Engine | null>(null)
@@ -90,7 +92,7 @@ export function useEngineRev() {
       e.oscs[2].frequency.setTargetAtTime(f / 2, t, 0.03)
       e.pulse.frequency.setTargetAtTime(f / 4, t, 0.03)
       e.filter.frequency.setTargetAtTime(700 + v * 3200, t, 0.04)
-      e.gain.gain.setTargetAtTime(revving.current || v > 0.02 ? 0.22 + v * 0.2 : 0, t, 0.06)
+      e.gain.gain.setTargetAtTime(!muted.current && (revving.current || v > 0.02) ? 0.22 + v * 0.2 : 0, t, 0.06)
     }
 
     if (revving.current || v > 0.002) {
@@ -98,6 +100,7 @@ export function useEngineRev() {
     } else {
       rpm.current = 0
       frame.current = 0
+      muted.current = false
       needleRef.current?.removeAttribute('transform')
       arcRef.current?.setAttribute('stroke-dashoffset', String(ARC_REST_OFFSET))
       // The context is left running (silent at gain 0): resuming it later from a hover,
@@ -124,6 +127,7 @@ export function useEngineRev() {
 
   const start = useCallback(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    muted.current = false
     revving.current = true
     // Silent until the page has had a click/tap/key (see unlock above); the needle animates regardless.
     const e = getEngine()
@@ -138,6 +142,19 @@ export function useEngineRev() {
     revving.current = false
   }, [])
 
+  /** One silent rev up to the red line and back, e.g. when a page opens (no gesture, so no sound). */
+  const blip = useCallback((holdMs = 900) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {}
+    muted.current = true
+    revving.current = true
+    if (!frame.current) {
+      last.current = performance.now()
+      frame.current = requestAnimationFrame(tick)
+    }
+    const t = window.setTimeout(() => { if (muted.current) revving.current = false }, holdMs)
+    return () => window.clearTimeout(t)
+  }, [tick])
+
   useEffect(
     () => () => {
       cancelAnimationFrame(frame.current)
@@ -149,6 +166,7 @@ export function useEngineRev() {
   return {
     needleRef,
     arcRef,
+    blip,
     bind: { onPointerEnter: start, onPointerLeave: stop, onFocus: start, onBlur: stop },
   }
 }
