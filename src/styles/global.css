@@ -166,8 +166,11 @@ button { font: inherit; }
 @keyframes dashmove { to { stroke-dashoffset: -240; } }
 @keyframes streak { from { transform: translateX(0); } to { transform: translateX(2300px); } }
 @keyframes flow { to { stroke-dashoffset: -20; } }
-.dl-art { position: absolute; right: -4%; bottom: -2%; width: min(980px, 86%); opacity: 0.55; pointer-events: none; }
-.dl-art svg { width: 100%; display: block; overflow: visible; }
+.dl-art { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.dl-road { position: absolute; left: 0; bottom: 14px; width: 100%; height: 40px; display: block; }
+.dl-car { position: absolute; right: max(-2vw, -32px); bottom: 30px; width: min(44vw, 660px); }
+/* Room under the content so the car drives below the list instead of behind it */
+.dl.sec { padding-bottom: calc(min(44vw, 660px) * 0.33 + 60px); }
 .hero-body { width: 100%; flex: 1; display: grid; grid-template-columns: minmax(0, 780px); align-items: center; position: relative; z-index: 2; padding-top: clamp(48px, 7vh, 96px); padding-bottom: clamp(40px, 7vh, 84px); }
 .hero-label { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.88); margin-bottom: 26px; animation: fadeUp 0.8s 0.05s var(--ease) both; }
 .hero-label::before { content: ""; width: 28px; height: 2px; background: var(--red); }
@@ -210,7 +213,8 @@ button { font: inherit; }
   .hero-body { align-items: flex-start; flex: 0 0 auto; }
   .hero-h { font-size: clamp(40px, 12vw, 72px); }
   .hero-car { position: relative; right: auto; bottom: auto; width: 118%; max-width: none; margin: 0 0 -6px -9%; }
-  .dl-art { width: 150%; right: -35%; }
+  .dl-car { width: 92%; right: -6%; opacity: 0.45; }
+  .dl.sec { padding-bottom: var(--sec); }
 }
 @media (max-width: 640px) { .st { display: none; } }
 @media (max-width: 520px) {

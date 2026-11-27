@@ -15,6 +15,8 @@ export default function Contact() {
         crumbs={[{ label: 'Contact' }]}
         title="Talk to the Carzenx Pvt. Ltd. team."
         sub="Questions about a loan, a document or a partnership? Call, email or send an enquiry and we will get back to you."
+        image="contact-support"
+        imageAlt="A smiling Carzenx support advisor wearing a headset at her desk, with colleagues on calls and a car in the showroom behind"
       />
       <section className="sec sec-grey">
         <div className="wrap contact-grid">

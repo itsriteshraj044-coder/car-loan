@@ -110,32 +110,39 @@ export function HeroBg() {
   )
 }
 
-/** The driving car: spinning wheels, headlight beam, gentle bob. */
+/** The driving car itself: spinning wheels, headlight beam, gentle bob. Needs <CarDefs /> on the page. */
+function DrivingCar() {
+  return (
+    <svg className="car-svg" viewBox="0 0 640 210">
+      <ellipse cx="320" cy="190" rx="340" ry="16" fill="url(#ug)" />
+      <ellipse cx="320" cy="185" rx="290" ry="6" fill="#000" opacity=".65" />
+      <g transform="translate(640 0) scale(-1 1)">
+        <path className="beam" d="M606 124 L930 70 L930 186 Z" fill="url(#cbm)" />
+        <path d={CAR_BODY} fill="url(#cb)" />
+        <circle cx="150" cy="152" r="40" fill="#04060a" />
+        <circle cx="482" cy="152" r="40" fill="#04060a" />
+        <path d={CAR_GLASS} fill="url(#cg)" />
+        <path d="M322 62L326 92L330 148" stroke="#000" strokeOpacity=".55" strokeWidth="1.6" fill="none" />
+        <path d={CAR_LINE} fill="none" stroke="#1248FF" strokeWidth="6" opacity=".45" filter="url(#bl)" />
+        <path d={CAR_LINE} fill="none" stroke="url(#cr)" strokeWidth="2" />
+        <path d="M62 124C190 113 390 109 592 124" fill="none" stroke="url(#cr)" strokeWidth="1.2" opacity=".6" />
+        <path d="M60 147C200 150 420 150 592 147" fill="none" stroke="#1248FF" strokeWidth="2.4" opacity=".85" />
+        <path d="M584 114C602 116 614 124 616 132L596 128C590 124 586 120 584 114Z" fill="#e8efff" />
+        <circle cx="608" cy="124" r="22" fill="url(#ug)" />
+        <circle cx="36" cy="124" r="14" fill="#FF1825" opacity=".35" filter="url(#bl)" />
+        <path d="M30 128C30 122 34 119 50 117" stroke="#FF1825" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+        <use href="#wh" x="150" y="152" />
+        <use href="#wh" x="482" y="152" />
+      </g>
+    </svg>
+  )
+}
+
+/** The hero's driving car. */
 export function HeroCar() {
   return (
     <div className="hero-car" aria-hidden="true">
-      <svg className="car-svg" viewBox="0 0 640 210">
-        <ellipse cx="320" cy="190" rx="340" ry="16" fill="url(#ug)" />
-        <ellipse cx="320" cy="185" rx="290" ry="6" fill="#000" opacity=".65" />
-        <g transform="translate(640 0) scale(-1 1)">
-          <path className="beam" d="M606 124 L930 70 L930 186 Z" fill="url(#cbm)" />
-          <path d={CAR_BODY} fill="url(#cb)" />
-          <circle cx="150" cy="152" r="40" fill="#04060a" />
-          <circle cx="482" cy="152" r="40" fill="#04060a" />
-          <path d={CAR_GLASS} fill="url(#cg)" />
-          <path d="M322 62L326 92L330 148" stroke="#000" strokeOpacity=".55" strokeWidth="1.6" fill="none" />
-          <path d={CAR_LINE} fill="none" stroke="#1248FF" strokeWidth="6" opacity=".45" filter="url(#bl)" />
-          <path d={CAR_LINE} fill="none" stroke="url(#cr)" strokeWidth="2" />
-          <path d="M62 124C190 113 390 109 592 124" fill="none" stroke="url(#cr)" strokeWidth="1.2" opacity=".6" />
-          <path d="M60 147C200 150 420 150 592 147" fill="none" stroke="#1248FF" strokeWidth="2.4" opacity=".85" />
-          <path d="M584 114C602 116 614 124 616 132L596 128C590 124 586 120 584 114Z" fill="#e8efff" />
-          <circle cx="608" cy="124" r="22" fill="url(#ug)" />
-          <circle cx="36" cy="124" r="14" fill="#FF1825" opacity=".35" filter="url(#bl)" />
-          <path d="M30 128C30 122 34 119 50 117" stroke="#FF1825" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-          <use href="#wh" x="150" y="152" />
-          <use href="#wh" x="482" y="152" />
-        </g>
-      </svg>
+      <DrivingCar />
     </div>
   )
 }
@@ -179,23 +186,17 @@ export function ShowroomArt() {
   )
 }
 
-/** Wireframe car outline with a flowing road line (dealer section background). */
+/** Dealer section background: the same driving car as the hero, on a road with a flowing lane line. */
 export function DealerArt() {
   return (
     <div className="dl-art" aria-hidden="true">
-      <svg viewBox="0 0 900 300">
-        <g transform="translate(20 14) scale(1.35)" fill="none" strokeLinecap="round">
-          <path d={CAR_BODY} stroke="url(#cr)" strokeWidth="1.4" />
-          <path d={CAR_GLASS} stroke="#4d73ff" strokeOpacity=".5" />
-          <path d="M322 62L326 92L330 148M60 147C200 150 420 150 592 147" stroke="#1248FF" strokeOpacity=".6" />
-          <circle cx="150" cy="152" r="34" stroke="#3a56c8" />
-          <circle cx="150" cy="152" r="20" stroke="#3a56c8" strokeOpacity=".6" />
-          <circle cx="482" cy="152" r="34" stroke="#3a56c8" />
-          <circle cx="482" cy="152" r="20" stroke="#3a56c8" strokeOpacity=".6" />
-        </g>
-        <path d="M0 266H900" stroke="#1248FF" strokeOpacity=".45" />
-        <path className="flow" d="M0 282H900" stroke="#fff" strokeOpacity=".25" strokeWidth="2" />
+      <svg className="dl-road" viewBox="0 0 900 40" preserveAspectRatio="none">
+        <path d="M0 8H900" stroke="#1248FF" strokeOpacity=".45" />
+        <path className="flow" d="M0 24H900" stroke="#fff" strokeOpacity=".25" strokeWidth="2" />
       </svg>
+      <div className="dl-car">
+        <DrivingCar />
+      </div>
     </div>
   )
 }
