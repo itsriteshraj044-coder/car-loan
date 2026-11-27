@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from 'react'
+import { useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 
 const types = [
@@ -109,25 +109,135 @@ function Range({
   )
 }
 
+function NumBox({
+  id,
+  label,
+  value,
+  min,
+  max,
+  suffix,
+  onChange,
+  onStart,
+}: {
+  id: string
+  label: string
+  value: number
+  min: number
+  max: number
+  suffix: string
+  onChange: (v: number) => void
+  onStart?: () => void
+}) {
+  const [draft, setDraft] = useState<string | null>(null)
+  const shown = draft ?? String(value)
+
+  const commit = () => {
+    if (draft === null) return
+    const n = parseInt(draft, 10)
+    if (Number.isFinite(n)) onChange(Math.min(max, Math.max(min, n)))
+    setDraft(null)
+  }
+
+  return (
+    <div className="rng-box">
+      <input
+        id={id}
+        aria-label={label}
+        type="text"
+        inputMode="numeric"
+        value={shown}
+        onFocus={(e) => {
+          onStart?.()
+          setDraft(String(value))
+          requestAnimationFrame(() => e.target.select())
+        }}
+        onChange={(e) => {
+          const clean = e.target.value.replace(/\D/g, '').slice(0, String(max).length)
+          setDraft(clean)
+          const n = parseInt(clean, 10)
+          if (Number.isFinite(n) && n >= min && n <= max) onChange(n)
+        }}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') e.currentTarget.blur()
+        }}
+        style={{ width: `${Math.max(2, shown.length) + 1}ch` }}
+      />
+      <span aria-hidden="true">{suffix}</span>
+    </div>
+  )
+}
+
+const MIN_MONTHS = 1
+
+function Tenure({ months, maxYears, onChange }: { months: number; maxYears: number; onChange: (m: number) => void }) {
+  const max = maxYears * 12
+  const y = Math.floor(months / 12)
+  const m = months % 12
+  // Years at the moment the months box was focused, so typing e.g. "25" adds 25 months
+  // to that base instead of compounding as the total rolls over into the next year
+  const baseYears = useRef(y)
+  const set = (total: number) => onChange(Math.min(max, Math.max(MIN_MONTHS, total)))
+  const p = ((months - MIN_MONTHS) / (max - MIN_MONTHS)) * 100
+  const text = `${y} ${y === 1 ? 'year' : 'years'}${m ? ` ${m} ${m === 1 ? 'month' : 'months'}` : ''}`
+
+  return (
+    <div className="rng" role="group" aria-labelledby="emi-ten-lbl">
+      <div className="rng-top">
+        <label id="emi-ten-lbl" htmlFor="emi-ten-y">Tenure</label>
+        <div className="rng-pair">
+          <NumBox id="emi-ten-y" label="Tenure years" value={y} min={0} max={maxYears} suffix={y === 1 ? 'yr' : 'yrs'} onChange={(v) => set(v * 12 + m)} />
+          <NumBox
+            id="emi-ten-m"
+            label="Tenure months"
+            value={m}
+            min={0}
+            max={max}
+            suffix={m === 1 ? 'mo' : 'mos'}
+            onStart={() => (baseYears.current = y)}
+            onChange={(v) => set(baseYears.current * 12 + v)}
+          />
+        </div>
+      </div>
+      <input
+        id="emi-ten"
+        aria-label="Tenure in months"
+        type="range"
+        min={MIN_MONTHS}
+        max={max}
+        step={1}
+        value={months}
+        onChange={(e) => set(Number(e.target.value))}
+        style={{ '--p': `${p}%` } as CSSProperties}
+        aria-valuetext={text}
+      />
+      <div className="rng-ends">
+        <span>1 month</span>
+        <span>{maxYears} years</span>
+      </div>
+    </div>
+  )
+}
+
 export default function EmiCalculator() {
   const [type, setType] = useState(types[0])
   const [amount, setAmount] = useState(types[0].amount)
-  const [years, setYears] = useState(5)
+  const [months, setMonths] = useState(60)
   const [rate, setRate] = useState(9.5)
 
   const pick = (t: (typeof types)[number]) => {
     setType(t)
     setAmount(t.amount)
-    setYears((y) => Math.min(y, t.maxYears))
+    setMonths((mo) => Math.min(mo, t.maxYears * 12))
   }
 
   const r = useMemo(() => {
-    const n = years * 12
+    const n = months
     const m = rate / 1200
     const emi = m === 0 ? amount / n : (amount * m * (1 + m) ** n) / ((1 + m) ** n - 1)
     const total = emi * n
     return { emi, total, interest: total - amount }
-  }, [amount, years, rate])
+  }, [amount, months, rate])
 
   const principalShare = (amount / r.total) * 100
 
@@ -154,18 +264,7 @@ export default function EmiCalculator() {
           prefix="₹"
           format={(v) => Math.round(v).toLocaleString('en-IN')}
         />
-        <Range
-          id="emi-yrs"
-          label="Tenure"
-          value={years}
-          min={1}
-          max={type.maxYears}
-          step={1}
-          display={`${years} ${years === 1 ? 'year' : 'years'}`}
-          ends={['1 year', `${type.maxYears} years`]}
-          onChange={setYears}
-          suffix={years === 1 ? 'year' : 'years'}
-        />
+        <Tenure months={months} maxYears={type.maxYears} onChange={setMonths} />
         <Range
           id="emi-rate"
           label="Interest rate (p.a.)"

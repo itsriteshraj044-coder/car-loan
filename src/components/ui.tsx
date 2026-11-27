@@ -26,11 +26,11 @@ export function Logo({ height = 44 }: { height?: number }) {
   return (
     <img
       src="/images/carzenx-logo-720.png"
-      srcSet="/images/carzenx-logo-720.png 720w, /images/carzenx-logo.png 1479w"
-      sizes={`${Math.round(height * 4.24)}px`}
+      srcSet="/images/carzenx-logo-720.png 720w, /images/carzenx-logo.png 1453w"
+      sizes={`${Math.round(height * 4.5)}px`}
       alt="Carzenx Pvt. Ltd. — Car Loan DSA Distributor"
       width={720}
-      height={170}
+      height={160}
       style={{ height, width: 'auto' }}
       decoding="async"
     />

@@ -16,8 +16,9 @@ export default function About() {
         crumbs={[{ label: 'About' }]}
         title="Making car finance simple, since 2017."
         sub="Carzenx Pvt. Ltd. started with a simple idea: buying a car should not stall at the finance stage. Today we connect buyers, dealers and lending partners across India."
-        image="drone-road"
-        imageAlt="Aerial view of a road winding through Mumbai"
+        image="about-showroom"
+        imageAlt="A Carzenx advisor explaining car finance options to a young couple in a showroom, with icons linking buyer, dealer and bank"
+        banner
         chip={{ big: String(site.since), small: 'Working pan-India since' }}
       />
 

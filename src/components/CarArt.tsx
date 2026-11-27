@@ -287,6 +287,8 @@ const CITIES: { name: string; at: [number, number]; side: 'top' | 'right' }[] = 
   { name: 'AHMEDABAD', at: project(72.57, 23.02), side: 'top' },
   { name: 'INDORE', at: project(75.86, 22.72), side: 'right' },
   { name: 'SURAT', at: project(72.83, 21.17), side: 'right' },
+  { name: 'DELHI', at: project(77.21, 28.61), side: 'top' },
+  { name: 'RANCHI', at: project(85.33, 23.34), side: 'right' },
 ]
 const LABEL_POS = {
   top: { x: 0, y: -8, textAnchor: 'middle' },

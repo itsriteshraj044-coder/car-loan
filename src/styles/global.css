@@ -87,6 +87,7 @@ button { font: inherit; }
 .dd-menu { position: absolute; top: calc(100% + 10px); left: 50%; width: 560px; transform: translate(-50%, 8px); opacity: 0; visibility: hidden; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 10px; box-shadow: 0 30px 60px -30px rgba(7, 9, 15, 0.45); display: grid; grid-template-columns: 1fr 1fr; gap: 2px; transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s; }
 .dd-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
 .dd:hover .dd-menu, .dd:focus-within .dd-menu, .dd.open .dd-menu { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.dd.shut .dd-menu { opacity: 0; visibility: hidden; transform: translate(-50%, 8px); }
 .dd-menu a { display: flex; gap: 12px; padding: 12px; border-radius: 12px; transition: background 0.2s; }
 .dd-menu a:hover { background: var(--grey); }
 .dd-menu .ic { width: 38px; height: 38px; border-radius: 10px; background: rgba(18, 72, 255, 0.08); color: var(--blue); display: grid; place-items: center; flex-shrink: 0; }
@@ -391,6 +392,7 @@ button { font: inherit; }
 .rng-box:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(18, 72, 255, 0.15); }
 .rng-box input { border: 0; outline: none; background: transparent; font: inherit; color: inherit; text-align: right; padding: 0; min-width: 2ch; max-width: 11ch; }
 .rng-box span { font-size: 15px; }
+.rng-pair { display: flex; gap: 8px; }
 .rng input[type="range"] { width: 100%; appearance: none; -webkit-appearance: none; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--blue) var(--p, 50%), var(--line) var(--p, 50%)); outline: none; }
 .rng input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 5px solid var(--blue); cursor: pointer; box-shadow: 0 4px 12px rgba(18, 72, 255, 0.35); }
 .rng input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 5px solid var(--blue); cursor: pointer; }

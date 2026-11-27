@@ -11,6 +11,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [dd, setDd] = useState(false)
+  // Force the Loans menu shut after picking an item, even while the cursor is still over it
+  const [ddHide, setDdHide] = useState(false)
   const burger = useRef<HTMLButtonElement>(null)
   const { pathname } = useLocation()
 
@@ -56,12 +58,22 @@ export default function Header() {
           <nav className="nav" aria-label="Primary">
             {nav.map((n) =>
               n.to === '/services' ? (
-                <div className={`dd ${dd ? 'open' : ''}`} key={n.to} onMouseLeave={() => setDd(false)}>
+                <div
+                  className={`dd ${dd ? 'open' : ''} ${ddHide ? 'shut' : ''}`}
+                  key={n.to}
+                  onMouseLeave={() => {
+                    setDd(false)
+                    setDdHide(false)
+                  }}
+                >
                   <button
                     className={`lnk ${loansActive ? 'on' : ''}`}
                     aria-expanded={dd}
                     aria-controls="loans-menu"
-                    onClick={() => setDd((v) => !v)}
+                    onClick={() => {
+                      setDdHide(false)
+                      setDd((v) => !v)
+                    }}
                   >
                     {n.label} <ChevronDown size={16} aria-hidden="true" />
                   </button>
@@ -69,7 +81,15 @@ export default function Header() {
                     {services.map((s) => {
                       const Icon = s.icon
                       return (
-                        <Link key={s.id} to={serviceHref(s.id)}>
+                        <Link
+                          key={s.id}
+                          to={serviceHref(s.id)}
+                          onClick={(e) => {
+                            e.currentTarget.blur()
+                            setDd(false)
+                            setDdHide(true)
+                          }}
+                        >
                           <span className="ic">
                             <Icon size={20} aria-hidden="true" />
                           </span>
