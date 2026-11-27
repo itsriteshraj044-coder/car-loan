@@ -20,6 +20,10 @@ function Range({
   display,
   ends,
   onChange,
+  prefix,
+  suffix,
+  decimals = 0,
+  format = (v: number) => String(v),
 }: {
   id: string
   label: string
@@ -30,16 +34,64 @@ function Range({
   display: string
   ends: [string, string]
   onChange: (v: number) => void
+  prefix?: string
+  suffix?: string
+  decimals?: number
+  format?: (v: number) => string
 }) {
-  const p = ((value - min) / (max - min)) * 100
+  const p = ((Math.min(Math.max(value, min), max) - min) / (max - min)) * 100
+  const [draft, setDraft] = useState<string | null>(null)
+
+  const parse = (s: string) => {
+    const n = parseFloat(s.replace(/[^\d.]/g, ''))
+    return Number.isFinite(n) ? n : NaN
+  }
+
+  const commit = () => {
+    if (draft === null) return
+    const n = parse(draft)
+    const f = 10 ** decimals
+    const v = Number.isNaN(n) ? value : Math.min(max, Math.max(min, Math.round(n * f) / f))
+    onChange(v)
+    setDraft(null)
+  }
+
+  const typed = (s: string) => {
+    const clean = decimals > 0 ? s.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1') : s.replace(/\D/g, '')
+    setDraft(clean)
+    const n = parse(clean)
+    if (!Number.isNaN(n) && n >= min && n <= max) onChange(n)
+  }
+
   return (
     <div className="rng">
       <div className="rng-top">
-        <label htmlFor={id}>{label}</label>
-        <output htmlFor={id}>{display}</output>
+        <label htmlFor={`${id}-num`}>{label}</label>
+        <div className="rng-box">
+          {prefix && <span aria-hidden="true">{prefix}</span>}
+          <input
+            id={`${id}-num`}
+            type="text"
+            inputMode={decimals > 0 ? 'decimal' : 'numeric'}
+            value={draft ?? format(value)}
+            onFocus={(e) => {
+              setDraft(String(value))
+              requestAnimationFrame(() => e.target.select())
+            }}
+            onChange={(e) => typed(e.target.value)}
+            onBlur={commit}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') e.currentTarget.blur()
+            }}
+            aria-describedby={`${id}-ends`}
+            style={{ width: `${Math.max(2, (draft ?? format(value)).length) + 1}ch` }}
+          />
+          {suffix && <span aria-hidden="true">{suffix}</span>}
+        </div>
       </div>
       <input
         id={id}
+        aria-label={label}
         type="range"
         min={min}
         max={max}
@@ -49,7 +101,7 @@ function Range({
         style={{ '--p': `${p}%` } as CSSProperties}
         aria-valuetext={display}
       />
-      <div className="rng-ends" aria-hidden="true">
+      <div className="rng-ends" id={`${id}-ends`}>
         <span>{ends[0]}</span>
         <span>{ends[1]}</span>
       </div>
@@ -99,6 +151,8 @@ export default function EmiCalculator() {
           display={inr(amount)}
           ends={['₹1 lakh', '₹50 lakh']}
           onChange={setAmount}
+          prefix="₹"
+          format={(v) => Math.round(v).toLocaleString('en-IN')}
         />
         <Range
           id="emi-yrs"
@@ -110,6 +164,7 @@ export default function EmiCalculator() {
           display={`${years} ${years === 1 ? 'year' : 'years'}`}
           ends={['1 year', `${type.maxYears} years`]}
           onChange={setYears}
+          suffix={years === 1 ? 'year' : 'years'}
         />
         <Range
           id="emi-rate"
@@ -121,6 +176,9 @@ export default function EmiCalculator() {
           display={`${rate.toFixed(2)}%`}
           ends={['7%', '18%']}
           onChange={setRate}
+          suffix="%"
+          decimals={2}
+          format={(v) => v.toFixed(2)}
         />
       </div>
       <div className="calc-out" aria-live="polite">

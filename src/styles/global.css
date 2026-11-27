@@ -387,6 +387,10 @@ button { font: inherit; }
 .rng-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
 .rng-top label { font-weight: 700; font-size: 15px; }
 .rng-top output { font-weight: 800; font-size: 18px; color: var(--blue); }
+.rng-box { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; font-weight: 800; font-size: 17px; color: var(--blue); cursor: text; transition: border-color .15s, box-shadow .15s; }
+.rng-box:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(18, 72, 255, 0.15); }
+.rng-box input { border: 0; outline: none; background: transparent; font: inherit; color: inherit; text-align: right; padding: 0; min-width: 2ch; max-width: 11ch; }
+.rng-box span { font-size: 15px; }
 .rng input[type="range"] { width: 100%; appearance: none; -webkit-appearance: none; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--blue) var(--p, 50%), var(--line) var(--p, 50%)); outline: none; }
 .rng input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 5px solid var(--blue); cursor: pointer; box-shadow: 0 4px 12px rgba(18, 72, 255, 0.35); }
 .rng input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 5px solid var(--blue); cursor: pointer; }
