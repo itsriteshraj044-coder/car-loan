@@ -495,7 +495,18 @@ button { font: inherit; }
 .pn-tag::before { content: ""; width: 22px; height: 2px; background: var(--red); }
 .pn h3 { margin: 0 0 12px; font-size: clamp(26px, 3vw, 36px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; }
 .pn p { margin: 0 0 26px; max-width: 42ch; color: rgba(255, 255, 255, 0.78); }
-@media (max-width: 820px) { .srv { grid-template-columns: 1fr; } .pn { min-height: 440px; } }
+@media (max-width: 820px) {
+  .srv { grid-template-columns: 1fr; }
+  /* Phones: the animation gets its own band at the top of the card and the copy sits below it */
+  .pn { --art: clamp(260px, 78vw, 340px); min-height: 0; padding-top: var(--art); }
+  .pn .pn-bg { bottom: auto; height: var(--art); }
+  .pn .pn-bg.im { top: 16px; right: auto; left: 50%; transform: translateX(-50%); width: min(92%, calc(var(--art) - 32px)); height: calc(var(--art) - 32px); }
+  .pn::after { content: none; }
+  /* The dial sits in the top third of its drawing, so enlarge it to fill the band */
+  .pn.gauge { --art: clamp(240px, 77vw, 300px); }
+  .pn.gauge .pn-bg { transform: scale(1.6); transform-origin: 50% 20px; }
+  .pn-c { padding-top: 8px; }
+}
 
 /* FAQ */
 .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(32px, 6vw, 88px); align-items: start; }
