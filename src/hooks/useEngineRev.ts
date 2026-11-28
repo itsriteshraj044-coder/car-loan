@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import type React from 'react'
 
 /** Degrees the needle travels from zero to the red line (the dial spans 270°). */
 const SWEEP_DEG = 262
@@ -167,6 +168,17 @@ export function useEngineRev() {
     needleRef,
     arcRef,
     blip,
-    bind: { onPointerEnter: start, onPointerLeave: stop, onFocus: start, onBlur: stop },
+    // Mouse: rev while hovering. Touch has no hover (a tap fires enter and leave together),
+    // so on phones the engine revs while the finger is held on the dial.
+    bind: {
+      onPointerEnter: (e: React.PointerEvent) => { if (e.pointerType === 'mouse') start() },
+      onPointerLeave: stop,
+      onPointerDown: (e: React.PointerEvent) => { if (e.pointerType !== 'mouse') start() },
+      onPointerUp: (e: React.PointerEvent) => { if (e.pointerType !== 'mouse') stop() },
+      onPointerCancel: stop,
+      onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
+      onFocus: start,
+      onBlur: stop,
+    },
   }
 }

@@ -245,7 +245,7 @@ button { font: inherit; }
 .ph-chip b { font-size: 24px; font-weight: 800; color: var(--blue); line-height: 1; letter-spacing: -0.02em; }
 .ph-chip span { font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--ink-2); max-width: 16ch; }
 .ph-art { display: grid; place-items: center; animation: fadeUp 1s 0.2s var(--ease) both; }
-.ph-gauge { width: min(100%, 380px); aspect-ratio: 1; filter: drop-shadow(0 30px 60px rgba(18, 72, 255, 0.45)); }
+.ph-gauge { width: min(100%, 380px); aspect-ratio: 1; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; filter: drop-shadow(0 30px 60px rgba(18, 72, 255, 0.45)); }
 .ph-gauge svg { display: block; width: 100%; height: 100%; }
 @media (max-width: 900px) { .ph-grid { grid-template-columns: 1fr; } .ph-media { aspect-ratio: 16 / 10; } .ph-gauge { width: min(70%, 280px); } }
 
