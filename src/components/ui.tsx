@@ -25,8 +25,8 @@ export function Img({ name, alt, sizes = '100vw', eager = false }: { name: strin
 export function Logo({ height = 44 }: { height?: number }) {
   return (
     <img
-      src="/images/carzenx-logo-720.png"
-      srcSet="/images/carzenx-logo-720.png 720w, /images/carzenx-logo.png 1453w"
+      src="/images/carzenx-logo-2-720.png"
+      srcSet="/images/carzenx-logo-2-720.png 720w, /images/carzenx-logo-2.png 1453w"
       sizes={`${Math.round(height * 4.5)}px`}
       alt="Carzenx Pvt. Ltd. — Car Loan DSA Distributor"
       width={720}
